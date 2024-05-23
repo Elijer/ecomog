@@ -1,3 +1,8 @@
+# Networking
+Going to start with [socket.io](https://socket.io/docs/v4/tutorial) and scale up from there as needed. Decided no, socket.io isn't ideal, but it should be fine to start with and relatively quick to get off the ground instead of building a UDP library (we talked about how TCP has some connectivity issues - it's too "under the hood")
+
+Apparently socket.io can also recieve binary data.
+
 # GDD
 
 - define data structures
@@ -8,9 +13,7 @@
 - generate refresh events (controller)
 
 
-
-
-
+# Game Notes
 
 Database
 players: {
