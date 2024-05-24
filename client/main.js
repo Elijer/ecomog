@@ -1,33 +1,38 @@
 import './style.css'
-import { io } from "socket.io-client";
+import javascriptLogo from './javascript.svg'
+import viteLogo from '/vite.svg'
+import { setupCounter } from './counter.js'
 
-const URL = "http://localhost:3000"
-// import { setupCounter } from './counter.js'
+const socket = new WebSocket('ws://localhost:8080')
 
-const socket = io(URL);
+socket.onmessage = ({data}) => {
+  console.log("Message from server", data)
+}
 
-socket.on('connect', () => {
-  console.log('connected');
-  
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-});
-    
-      // form.addEventListener('submit', (e) => {
-      //   e.preventDefault();
-      //   if (input.value) {
-      //     socket.emit('chat message', input.value);
-      //     input.value = '';
-      //   }
-      // });
+socket.onopen = () => {
+  console.log("Connection established")
+  socket.send("Hey")
+}
 
-      // socket.on('chat message', (msg) => {
-      //   socket.emit("chat message", "tets")
-      //   const item = document.createElement('li');
-      //   item.textContent = msg;
-      //   messages.appendChild(item);
-      //   window.scrollTo(0, document.body.scrollHeight);
-      // });
+
+console.log('Hello Vite!')
+
+document.querySelector('#app').innerHTML = `
+  <div>
+    <a href="https://vitejs.dev" target="_blank">
+      <img src="${viteLogo}" class="logo" alt="Vite logo" />
+    </a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
+      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
+    </a>
+    <h1>Hello Vite!</h1>
+    <div class="card">
+      <button id="counter" type="button"></button>
+    </div>
+    <p class="read-the-docs">
+      Click on the Vite logo to learn more
+    </p>
+  </div>
+`
 
 setupCounter(document.querySelector('#counter'))

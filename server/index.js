@@ -1,14 +1,16 @@
 const express = require('express')
 const { createServer } = require('node:http')
 const { join } = require('node:path');
-const { Server } = require("socket.io");
+const Websocket = require('ws')
+const server = new Websocket.Server({ port: '8080' })
 
-const server = createServer();
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173/0"
-  }
-});
+server.on('connection', socket => {
+
+  socket.on('message', message => {
+    console.log("MESSAGE RECIEVED")
+    socket.send(`Roger that! ${message}`)
+  })
+})
 
 const app = express()
 
@@ -19,7 +21,7 @@ app.get('/', (_req, res) => {
   res.sendFile(join(__dirname, 'index.html'));
 });
 
-io.on('connection', (socket) => {
+// io.on('connection', (socket) => {
   
   // const playState = game.initializePlayer()
 
@@ -27,8 +29,8 @@ io.on('connection', (socket) => {
   //   io.emit('game state', msg);
   // });
 
-});
+// });
 
-server.listen(3000, () => {
-  console.log("server running on http://localhost:3000")
-})
+// server.listen(3000, () => {
+//   console.log("server running on http://localhost:3000")
+// })
