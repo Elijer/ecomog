@@ -1,25 +1,27 @@
-const express = require('express')
-const { createServer } = require('node:http')
-const { join } = require('node:path');
-const { Server } = require("socket.io");
+const { createServer } = require('http');
+const { Server } = require('socket.io');
 
-const server = createServer();
-const io = new Server(server, {
+const httpServer = createServer();
+const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173/0"
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"]
   }
 });
 
-const app = express()
-
-const { GameInstance } = require('./initialization.js');
-const game = new GameInstance(100, 100)
-
-app.get('/', (_req, res) => {
-  res.sendFile(join(__dirname, 'index.html'));
+io.on("connection", (socket) => {
+  console.log("Connected")
+  socket.on("player joined", (playerId) => {
+    console.log(playerId)
+  })
 });
 
-io.on('connection', (socket) => {
+httpServer.listen(3000);
+
+// const { GameInstance } = require('./initialization.js');
+// const game = new GameInstance(100, 100)
+
+// io.on('connection', (socket) => {
   
   // const playState = game.initializePlayer()
 
@@ -27,8 +29,4 @@ io.on('connection', (socket) => {
   //   io.emit('game state', msg);
   // });
 
-});
-
-server.listen(3000, () => {
-  console.log("server running on http://localhost:3000")
-})
+// });
