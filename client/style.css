@@ -10,6 +10,7 @@ body {
 }
 
 #box {
+  margin-top: 20px;
   width: 600px; /* this is what the margin auto works with. Ah but it's just a trick */
 
   display: grid;
