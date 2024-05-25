@@ -45,7 +45,7 @@ export default class God {
           if (aMoss.position[0] === x && aMoss.position[1] === y) {
             let sq = document.getElementById(`$sq-${x}-${y}`)
             sq.style.backgroundColor = aMoss.color;
-            console.log("YAY")
+            console.log(game)
           }
         }
       }

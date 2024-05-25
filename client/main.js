@@ -20,6 +20,7 @@ socket.on("initial game state", (game) => {
 })
 
 socket.on("life", (game) => {
+  console.log(game)
   god.letTimeFlow(game)
 })
 

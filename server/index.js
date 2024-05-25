@@ -6,7 +6,7 @@ const game = new GameInstance(50, 50)
 const lifeSpeed = 1000
 setInterval(() => {
   game.life()
-  io.emit("life", game)
+  io.emit("life", game.portableState())
 }, lifeSpeed)
 
 const httpServer = createServer();
@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
   socket.on("player joined", (playerId) => {
     game.initializePlayer(playerId)
     console.log(game.players)
-    socket.emit("initial game state", game)
+    socket.emit("initial game state", game.portableState())
 
     socket.on("disconnecting", async(reason) => {
       game.removePlayer(playerId)

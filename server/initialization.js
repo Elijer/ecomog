@@ -77,6 +77,15 @@ class GameInstance {
     return this.players
   }
 
+  portableState(){
+    return {
+      rows: this.rows,
+      cols: this.cols,
+      players: this.players,
+      moss: this.moss.map(moss => moss.portableState()) // Use map instead of forEach
+    }
+  }
+
 }
 
 class Moss {
@@ -112,6 +121,13 @@ class Moss {
 
   reflect(){
     return this.colorManager.rgbToHex(this.red * this.maturity, this.green * this.maturity, this.blue * maturity)
+  }
+
+  portableState(){
+    return {
+      position: this.position,
+      color: this.color,
+    }
   }
 }
 
