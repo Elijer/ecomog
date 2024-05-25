@@ -27,14 +27,19 @@ class GameInstance {
   
   }
 
-  initializePlayer(players){
+  initializePlayer(playerId){
     this.players.push(
       {
-      name: uuidv4(),
-      position: this.assignRandomPoint(players)
+      name: playerId,
+      position: this.assignRandomPoint()
       }
     )
   
+    return this.players
+  }
+
+  removePlayer(playerId){
+    this.players = this.players.filter(player => player.name !== playerId)
     return this.players
   }
 
