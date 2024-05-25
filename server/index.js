@@ -26,8 +26,6 @@ io.on("connection", (socket) => {
   })
 });
 
-
-
 httpServer.listen(3000);
 
 // io.on('connection', (socket) => {
