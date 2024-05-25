@@ -32,10 +32,19 @@ class GameInstance {
   }
 
   initializePlayer(playerId){
+    // The idea was to allow the player to persist, but I need to think about it more
+    // I am thinking of maybe added another player field "online"
+    // And using that to persist the player data without displaying them
+    // But this opens up the possibility of accidentally stacking players
+    const playerExists = this.players.some(player => player.id === playerId)
+    console.log(playerExists)
+    if (playerExists) return this.players
+
     this.players.push(
       {
-      name: playerId,
-      position: this.assignRandomPoint(),
+      id: playerId,
+      position: this.assignRandomPoint(), // to avoid this, I can create an overload of assignRandomPoint
+      // That takes the existing position and only reassigns the player if someone else is in it.
       color: this.generatePlayerColor()
       }
     )
@@ -44,7 +53,8 @@ class GameInstance {
   }
 
   removePlayer(playerId){
-    this.players = this.players.filter(player => player.name !== playerId)
+    console.log("remove player")
+    this.players = this.players.filter(player => player.id !== playerId)
     return this.players
   }
 
