@@ -3,6 +3,11 @@ const { Server } = require('socket.io');
 
 const { GameInstance } = require('./initialization.js');
 const game = new GameInstance(50, 50)
+const lifeSpeed = 1000
+setInterval(() => {
+  game.life()
+  io.emit("life", game)
+}, lifeSpeed)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
@@ -11,6 +16,7 @@ const io = new Server(httpServer, {
     methods: ["GET", "POST"]
   }
 });
+
 
 io.on("connection", (socket) => {
   console.log("Connected")
@@ -28,12 +34,3 @@ io.on("connection", (socket) => {
 });
 
 httpServer.listen(3000);
-
-// io.on('connection', (socket) => {
-  
-
-  // socket.on('game state', (msg) => {
-  //   io.emit('game state', msg);
-  // });
-
-// });

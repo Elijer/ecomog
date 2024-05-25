@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import { v4 as uuidv4 } from 'uuid';
 import God from './god.js'
 
+let god;
 const playerId = () => localStorage.getItem('playerId') || localStorage.setItem('playerId', uuidv4())
 const mapConfig = {
   sqSize: 4
@@ -14,9 +15,12 @@ socket.on("connect", () => {
 });
 
 socket.on("initial game state", (game) => {
-  const god = new God(game, mapConfig)
+  god = new God(game, mapConfig)
   god.createWorld()
-  console.log(game)
+})
+
+socket.on("life", (game) => {
+  god.letTimeFlow(game)
 })
 
 socket.on("disconnect", (reason, details) => {
