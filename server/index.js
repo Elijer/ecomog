@@ -2,7 +2,7 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 
 const { GameInstance } = require('./initialization.js');
-const game = new GameInstance(100, 100)
+const game = new GameInstance(50, 50)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
@@ -17,6 +17,7 @@ io.on("connection", (socket) => {
   socket.on("player joined", (playerId) => {
     game.initializePlayer(playerId)
     console.log(game.players)
+    socket.emit("initial game state", game)
 
     socket.on("disconnecting", async(reason) => {
       game.removePlayer(playerId)

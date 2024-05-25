@@ -11,6 +11,10 @@ class GameInstance {
     this.players = []
   }
 
+  generatePlayerColor = () => {
+    return `#${Math.floor(Math.random()*16777215).toString(16)}`
+  }
+
   generateRandomPoint = () => {
     return [Math.floor(Math.random() * this.rows), Math.floor(Math.random() * this.cols)]
   }
@@ -31,7 +35,8 @@ class GameInstance {
     this.players.push(
       {
       name: playerId,
-      position: this.assignRandomPoint()
+      position: this.assignRandomPoint(),
+      color: this.generatePlayerColor()
       }
     )
   

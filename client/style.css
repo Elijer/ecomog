@@ -1,3 +1,33 @@
 body {
-  background: aliceblue;
+  font-family: sans-serif;
+  color: rgb(51, 46, 46);
+  margin: auto;
+  background: black;
+}
+
+#instruction, #score {
+  color: rgba(255, 255, 255, .3);
+}
+
+#box {
+  width: 600px; /* this is what the margin auto works with. Ah but it's just a trick */
+
+  display: grid;
+  grid-template-columns: repeat(120, 1fr);
+}
+
+.sq {
+  border: .1px solid rgba(255, 255, 255, .1);
+  font-size: 6px;
+}
+
+div.row {
+  padding-bottom: 0px;
+}
+
+.con {
+  position: relative;
+  font-size: 60px;
+  top: -10px;
+  left: -6px;
 }
