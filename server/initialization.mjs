@@ -101,7 +101,7 @@ class Moss {
 
   constructor(x, y, board){
     this.position = [x, y]
-    this.maturity = 0.1
+    this.maturity = 0.01
     this.red = 60
     this.blue = 120
     this.green = 180
@@ -120,7 +120,7 @@ class Moss {
     if (this.maturity === 7){
       //
     }
-    this.maturity += .1 * this.young
+    this.maturity += .01 * this.young
     if (this.maturity > this.maxMaturity){
       this.young = -1
       this.maturity = 1
