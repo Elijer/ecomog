@@ -5,7 +5,9 @@ export default class God {
   }
 
   createWorld(){
-      for (let y = 0; y < this.game.rows; y++) {
+    let box = document.getElementById('box')
+    box.innerHTML = ''
+    for (let y = 0; y < this.game.rows; y++) {
       let row = document.createElement('div')
       row.classList.add('row')
       for (let x = 0; x < this.game.cols; x++) {

@@ -2,7 +2,7 @@
   "name": "multiplayer_game",
   "version": "1.0.0",
   "description": "- define data structures",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "nodemon index.js"
@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "mongodb": "^6.6.2",
+    "rgb-hex": "^4.1.0",
     "socket.io": "^4.7.5",
     "uuid": "^9.0.1"
   },
