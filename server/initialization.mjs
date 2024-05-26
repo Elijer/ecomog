@@ -1,3 +1,12 @@
+/*
+Refactor:
+- How to handle empty tiles - with null? Or some sort of empty object?
+- Portable state should probably be a single method that is ineherited by everyone
+- All I am actually sending right now is color, so it might actually be worth it to get rid of channels for now?
+- In any case, each item only needs to return a color actually, and even if I keep channels
+- The channels have precedence, so I could, to the client, just send one color per cell, even if there are channels on the server
+*/
+
 
 import { v4 as uuidv4 } from 'uuid';
 import rgbHex from 'rgb-hex';
