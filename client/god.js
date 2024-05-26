@@ -12,8 +12,10 @@ export default class God {
       for (let x = 0; x < this.game.cols; x++) {
         let sq = this.createSq(this.sqSize)
         sq.id = `$sq-${x}-${y}`
+        
+        // Player channel
         if (this.game.grid[x][y][0] !== 0){
-          // console.log(this.game.grid[x][y][0])
+          console.log(this.game.grid[x][y][0])
           sq.style.backgroundColor = this.game.grid[x][y][0].color
         }
         row.appendChild(sq);
