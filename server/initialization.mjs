@@ -3,6 +3,23 @@ import { v4 as uuidv4 } from 'uuid';
 import rgbHex from 'rgb-hex';
 import { generateRandomColor, generateRed, clamp } from './utilities.mjs'
 
+class BaseTile {
+  constructor(){
+    this.color = this.getRandomTerrainColor()
+  }
+
+  getRandomTerrainColor(){
+    const terrainColors = ["#00000", "#010101", "#020202", "#030303", "#040404", "#050505", "#060606", "#070707"];
+    return terrainColors[Math.floor(Math.random() * terrainColors.length)]
+  }
+
+  portableState(){
+    return {
+      color: this.color
+    }
+  }
+}
+
 class GameInstance {
   constructor(rows, cols){
     this.rows = rows
@@ -16,7 +33,7 @@ initializeGrid() {
   for (let i = 0; i < this.rows; i++) {
     const row = [];
     for (let j = 0; j < this.cols; j++) {
-      row.push([0, 0]); // Create a new array for each cell
+      row.push([0, 0, new BaseTile()]); // Create a new array for each cell
     }
     grid.push(row);
   }

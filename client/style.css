@@ -10,7 +10,8 @@ body {
 }
 
 #box {
-  margin-top: 20px;
+  margin: auto;
+  margin-top: 10%;
   width: 600px; /* this is what the margin auto works with. Ah but it's just a trick */
 
   display: grid;
@@ -18,7 +19,7 @@ body {
 }
 
 .sq {
-  border: .1px solid rgba(255, 255, 255, .1);
+  /* border: .1px solid rgba(255, 255, 255, .1); */
   font-size: 6px;
 }
 
