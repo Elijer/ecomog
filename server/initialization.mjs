@@ -1,8 +1,5 @@
 import rgbHex from 'rgb-hex';
-
-const generateRandomPoint = (rows, cols) => {
-  return [Math.floor(Math.random() * rows), Math.floor(Math.random() * cols)]
-}
+import { generateRandomPoint } from './utilities.mjs'
 
 class BaseTile {
   portableState(){
