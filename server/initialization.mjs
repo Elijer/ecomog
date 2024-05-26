@@ -1,5 +1,5 @@
 import rgbHex from 'rgb-hex';
-import { generateRandomPoint } from './utilities.mjs'
+import { generatePlayerColor, generateRed } from './utilities.mjs'
 
 class BaseTile {
   portableState(){
@@ -13,11 +13,9 @@ class GameInstance {
     this.cols = cols
     this.players = []
     this.moss = []
-    this.initializeMoss()
-
     this.grid = []
     this.initializeGrid()
-
+    this.initializeMoss()
   }
 
   initializeGrid(){
@@ -31,15 +29,13 @@ class GameInstance {
   initializeMoss(){
     const initialMossCount = this.rows * this.cols * Moss.emergence
     for (let i = 0; i < initialMossCount; i++){
-      let randomPoint = generateRandomPoint(this.rows, this.cols)
+      let randomPoint = this.generateRandomPoint()
       let pointX = randomPoint[0]
       let pointY = randomPoint[1]
       const mossInstance = new Moss(pointX, pointY, [this.rows, this.cols])
       this.moss.push(mossInstance)
     }
   }
-
-  insert
 
   life(){
     // Moss
@@ -50,21 +46,10 @@ class GameInstance {
       }
 
       if (aMoss.maturity < .8 && aMoss.maturity > .7 && aMoss.young === 1 && aMoss.dead === false){
-        // console.log(aMoss.probeSurroundings())
-        // console.log(aMoss.viableMove())
         const move = aMoss.viableMove()
         this.moss.push(new Moss(move[0], move[1],[this.rows, this.cols]))
       }
     })
-  }
-
-  generatePlayerColor = () => {
-    return `#${Math.floor(Math.random()*16777215).toString(16)}`
-  }
-
-  generateRed = () => {
-    const redHex = Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
-    return `#${redHex}0000`;
   }
 
   generateRandomPoint = () => {
@@ -72,7 +57,7 @@ class GameInstance {
   }
 
   assignRandomPoint(){
-    let randomPoint = this.generateRandomPoint()
+    let randomPoint = this.generateRandomPoint(this.rows, this.cols)
     for (const player in this.players){
       if (player.position === randomPoint) {
         return this.assignRandomPoint()
