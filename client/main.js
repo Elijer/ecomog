@@ -11,6 +11,7 @@ const mapConfig = {
 
 const  socket = io("ws://localhost:3000")
 socket.on("connect", () => {
+  console.log("Connected")
   console.log(socket.emit("player joined", playerId()))
 });
 
@@ -19,10 +20,10 @@ socket.on("initial game state", (game) => {
   god.createWorld()
 })
 
-socket.on("life", (game) => {
-  console.log(game)
-  god.letTimeFlow(game)
-})
+// socket.on("life", (game) => {
+//   console.log(game)
+//   god.letTimeFlow(game)
+// })
 
 socket.on("disconnect", (reason, details) => {
   console.log("The server disconnect", reason, details)

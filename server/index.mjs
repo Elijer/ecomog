@@ -3,14 +3,11 @@ import { Server } from 'socket.io';
 import GameInstance from './initialization.mjs';
 
 const game = new GameInstance(50, 50);
-const lifeSpeed = 100
-setInterval(() => {
-  game.life()
-  io.emit("life", game.portableState())
-  // console.log(game.moss[24].maturity)
-  // console.log(game.moss[24].dead)
-  // console.log(game.moss[24].young)
-}, lifeSpeed)
+// const lifeSpeed = 1000
+// setInterval(() => {
+//   game.life()
+//   io.emit("life", game.portableState())
+// }, lifeSpeed)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
@@ -26,10 +23,11 @@ io.on("connection", (socket) => {
   socket.on("player joined", (playerId) => {
     game.initializePlayer(playerId)
     // console.log(game.players)
-    socket.emit("initial game state", game.portableState())
+    // socket.emit("initial game state", game.portableState())
+    socket.emit("initial game state", game)
 
     socket.on("disconnecting", async(reason) => {
-      game.removePlayer(playerId)
+      // game.removePlayer(playerId)
       console.log("Removed a player and now here is our game state")
       // console.log(game.players)
     })
