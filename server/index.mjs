@@ -24,8 +24,8 @@ io.on("connection", (socket) => {
   socket.on("player joined", (playerId) => {
     game.initializePlayer(playerId)
     // console.log(game.players)
-    // socket.emit("initial game state", game.portableState())
-    socket.emit("initial game state", game)
+    // game.portableState()
+    socket.emit("initial game state", game.portableState())
 
     socket.on("disconnecting", async(reason) => {
       // game.removePlayer(playerId)

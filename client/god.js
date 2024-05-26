@@ -14,11 +14,12 @@ export default class God {
         sq.id = `$sq-${x}-${y}`
 
         // Player channel
-        if (this.game.grid[x][y][0] !== 0){
-          console.log(this.game.grid[x][y][0])
+        if (this.game.grid[x][y][0]){
+          // console.log(this.game.grid[x][y][0])
           sq.style.backgroundColor = this.game.grid[x][y][0].color
+        } else if (this.game.grid[x][y][1]){
+          sq.style.backgroundColor = this.game.grid[x][y][1].color
         } else {
-          console.log(this.game.grid[x][y][2].color)
           sq.style.backgroundColor = this.game.grid[x][y][2].color
         }
         row.appendChild(sq);

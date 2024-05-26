@@ -8,7 +8,9 @@ class GameInstance {
     this.rows = rows
     this.cols = cols
     this.players = {}
+    this.mosses = {}
     this.grid = this.initializeGrid()
+    this.initializeMosses()
   }
 
   initializeGrid() {
@@ -16,7 +18,7 @@ class GameInstance {
     for (let i = 0; i < this.rows; i++) {
       const row = [];
       for (let j = 0; j < this.cols; j++) {
-        row.push([0, 0, new BaseTile()]); // Create a new array for each cell
+        row.push([null, null, new BaseTile()]); // Create a new array for each cell
       }
       grid.push(row);
     }
@@ -27,13 +29,38 @@ class GameInstance {
     const player = new Player(playerId, this.players, this.grid, this.cols, this.rows)
     player.initialize()
   }
-}
 
-class Item {
-  constructor(){
-    this.color = generateRandomColor()
+  initializeMosses(){
+    const initialMossCount = this.rows * this.cols * Moss.emergence
+    for (let i = 0; i < initialMossCount; i++){
+      const moss = new Moss(this.rows, this.cols, this.grid, 1, this.mosses)
+      const [x, y] = moss.position
+      this.mosses[moss.id] = {
+        position: [x,y]
+      }
+      this.grid[x][y][1] = moss
+    }
   }
 
+  portableState(){
+    return {
+      rows: this.rows,
+      cols: this.cols,
+      grid: this.convertGridToPortableState()
+    }
+  }
+
+  convertGridToPortableState(){
+    return this.grid.map(row => row.map(cell => cell.map(channel => {
+      if (channel === null) return null
+      try {
+        return channel.portableState()
+      } catch (error) {
+        console.log("There was an error with the following channel")
+        console.log(channel)
+      }
+    })))
+  }
 }
 
 class BaseTile {
@@ -44,7 +71,8 @@ class BaseTile {
   // TODO: If I want mineral deposits, it would be more interesting to distribute them less randomly
   // More like a vein or a deposit
   getRandomTerrainColor(){
-    const terrainColors = ["#00000", "#010101", "#020202", "#030303", "#040404", "#050505", "#060606", "#070707"];
+    const terrainColors = ["#00000", "#010101", "#020202", "#030303", "#040404", "#050505", "#060606", "#070707", "#080808"];
+    
     return terrainColors[Math.floor(Math.random() * terrainColors.length)]
   }
 
@@ -55,17 +83,36 @@ class BaseTile {
   }
 }
 
-class Player {
-  constructor(id, players, grid, cols, rows){
-    this.players = players
-    this.grid = grid
-    this.cols = cols
+class Item {
+  constructor(rows, cols, grid, channel = 2){
     this.rows = rows
-
-    this.id = id
+    this.cols = cols
+    this.grid = grid
     this.position = []
+    this.channel = channel
+  }
+
+  findEmptyPoint(){
+    // TODO: Set some sort of limit to how many times this is called recursively
+    const [x, y] = this.generateRandomPoint()
+    if (this.grid[x][y][this.channel] === null){
+      return [x, y]
+    }
+
+    return this.findEmptyPoint()
+  }
+
+  generateRandomPoint = () => {
+    return [Math.floor(Math.random() * this.rows), Math.floor(Math.random() * this.cols)]
+  }
+}
+
+class Player extends Item {
+  constructor(id, players, grid, cols, rows){
+    super(rows, cols, grid, 0)
+    this.players = players
+    this.id = id
     this.color = generateRandomColor()
-    this.channel = 0
   }
 
   initialize(){
@@ -79,7 +126,6 @@ class Player {
 
     // Create a player and assign them a random, empty point on the grid
   create(playerId){
-
     const [x, y] = this.findEmptyPoint()
     // Can find full object through the grid
     this.players[playerId] = {
@@ -87,12 +133,13 @@ class Player {
     }
 
     // Can use the object to iterate through players
-    this.grid[x][y][0] = {
-      id: playerId,
-      position: [x, y],
-      color: generateRandomColor(),
-      online: true
-    }
+    // this.grid[x][y][0] = {
+    //   id: playerId,
+    //   position: [x, y],
+    //   color: generateRandomColor(),
+    //   online: true
+    // }
+    this.grid[x][y][0] = this
 
   }
 
@@ -100,47 +147,38 @@ class Player {
     this.players[playerId].online = false
   }
 
-  findEmptyPoint(){
-    // TODO: Set some sort of limit to how many times this is called recursively
-    const [x, y] = this.generateRandomPoint()
-    if (this.grid[x][y][this.channel] === 0){
-      return [x, y]
+  portableState(){
+    return {
+      color: this.color
     }
-
-    return this.findEmptyPoint(channel)
   }
-
-  generateRandomPoint = () => {
-    return [Math.floor(Math.random() * this.rows), Math.floor(Math.random() * this.cols)]
-  }
-
 }
 
+class Moss extends Item {
 
-// class BaseTile {
-//   portableState(){
-//     return 0
-//   }
-// }
+  static emergence = .01
 
-// class GameInstance {
-//   constructor(rows, cols){
-//     this.rows = rows
-//     this.cols = cols
-//     this.players = []
-//     this.moss = {}
-//     this.grid = []
-//     this.initializeGrid()
-//     this.initializeMoss()
-//   }
+  constructor(rows, cols, grid, channel = 1, mosses, generation = 1){
+    super(rows, cols, grid, channel)
+    this.mosses = mosses
+    this.position = this.findEmptyPoint()
+    this.rgb = [60, 120, 180]
+    this.generation = generation
+    this.id = uuidv4()
+    this.maturity = .1
+  }
 
-  // initializeGrid(){
-  //   this.grid = Array.from({ length: this.rows }, () => 
-  //     Array.from({ length: this.cols }, () => 
-  //       [new BaseTile(), new BaseTile()]
-  //     )
-  //   );
-  // }
+  reflect() {
+    return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], clamp(this.maturity, 0, 1))
+  }
+
+  portableState(){
+    return {
+      color: this.reflect()
+    }
+  }
+}
+
 
   // initializeMoss(){
   //   // Moss emergency refers to the percentage of the board that will be initially covered in moss
