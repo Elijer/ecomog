@@ -4,6 +4,12 @@ const generateRandomPoint = (rows, cols) => {
   return [Math.floor(Math.random() * rows), Math.floor(Math.random() * cols)]
 }
 
+class BaseTile {
+  portableState(){
+    return 0
+  }
+}
+
 class GameInstance {
   constructor(rows, cols){
     this.rows = rows
@@ -11,15 +17,32 @@ class GameInstance {
     this.players = []
     this.moss = []
     this.initializeMoss()
+
+    this.grid = []
+    this.initializeGrid()
+
+  }
+
+  initializeGrid(){
+    this.grid = Array.from({ length: this.rows }, () => 
+      Array.from({ length: this.cols }, () => 
+        [new BaseTile(), new BaseTile()]
+      )
+    );
   }
 
   initializeMoss(){
     const initialMossCount = this.rows * this.cols * Moss.emergence
     for (let i = 0; i < initialMossCount; i++){
       let randomPoint = generateRandomPoint(this.rows, this.cols)
-      this.moss.push(new Moss(randomPoint[0], randomPoint[1], [this.rows, this.cols]))
+      let pointX = randomPoint[0]
+      let pointY = randomPoint[1]
+      const mossInstance = new Moss(pointX, pointY, [this.rows, this.cols])
+      this.moss.push(mossInstance)
     }
   }
+
+  insert
 
   life(){
     // Moss
@@ -89,7 +112,10 @@ class GameInstance {
       rows: this.rows,
       cols: this.cols,
       players: this.players,
-      moss: this.moss.map(moss => moss.portableState()) // Use map instead of forEach
+      moss: this.moss.map(moss => moss.portableState()), // Use map instead of forEach
+      // Go through all three layers - x, y, and the two channels of each tile, and call portableState which must exist
+      // For all objects saved in a tile
+      grid: this.grid.map(thing => thing.map(otherThing => otherThing.map(thirdThing => thirdThing.portableState())))
     }
   }
 
