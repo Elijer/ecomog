@@ -2,7 +2,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import GameInstance from './initialization.mjs';
 
-const dim = 50
+const dim = 30
 const game = new GameInstance(dim, dim);
 // const lifeSpeed = 1000
 // setInterval(() => {

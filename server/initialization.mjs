@@ -3,11 +3,46 @@ import { v4 as uuidv4 } from 'uuid';
 import rgbHex from 'rgb-hex';
 import { generateRandomColor, generateRed, clamp } from './utilities.mjs'
 
+class GameInstance {
+  constructor(rows, cols){
+    this.rows = rows
+    this.cols = cols
+    this.players = {}
+    this.grid = this.initializeGrid()
+  }
+
+  initializeGrid() {
+    const grid = [];
+    for (let i = 0; i < this.rows; i++) {
+      const row = [];
+      for (let j = 0; j < this.cols; j++) {
+        row.push([0, 0, new BaseTile()]); // Create a new array for each cell
+      }
+      grid.push(row);
+    }
+    return grid;
+  }
+
+  initializePlayer(playerId){
+    const player = new Player(playerId, this.players, this.grid, this.cols, this.rows)
+    player.initialize()
+  }
+}
+
+class Item {
+  constructor(){
+    this.color = generateRandomColor()
+  }
+
+}
+
 class BaseTile {
   constructor(){
     this.color = this.getRandomTerrainColor()
   }
-
+  
+  // TODO: If I want mineral deposits, it would be more interesting to distribute them less randomly
+  // More like a vein or a deposit
   getRandomTerrainColor(){
     const terrainColors = ["#00000", "#010101", "#020202", "#030303", "#040404", "#050505", "#060606", "#070707"];
     return terrainColors[Math.floor(Math.random() * terrainColors.length)]
@@ -20,39 +55,32 @@ class BaseTile {
   }
 }
 
-class GameInstance {
-  constructor(rows, cols){
-    this.rows = rows
+class Player {
+  constructor(id, players, grid, cols, rows){
+    this.players = players
+    this.grid = grid
     this.cols = cols
-    this.players = {}
-    this.grid = this.initializeGrid()
+    this.rows = rows
+
+    this.id = id
+    this.position = []
+    this.color = generateRandomColor()
+    this.channel = 0
   }
 
-initializeGrid() {
-  const grid = [];
-  for (let i = 0; i < this.rows; i++) {
-    const row = [];
-    for (let j = 0; j < this.cols; j++) {
-      row.push([0, 0, new BaseTile()]); // Create a new array for each cell
-    }
-    grid.push(row);
-  }
-  return grid;
-}
-
-  initializePlayer(playerId){
-    if (this.players[playerId]){
-      this.players[playerId].online = true // TODO: Set online to false when player disconnects
+  initialize(){
+    if (this.players[this.id]){
+      this.players[this.id].online = true // TODO: Set online to false when player disconnects
       return
     }
 
-    this.createPlayer(playerId)
+    this.create(this.id)
   }
 
-  // Create a player and assign them a random, empty point on the grid
-  createPlayer(playerId){
+    // Create a player and assign them a random, empty point on the grid
+  create(playerId){
 
-    const [x, y] = this.findEmptyPoint(0)
+    const [x, y] = this.findEmptyPoint()
     // Can find full object through the grid
     this.players[playerId] = {
       position: [x, y],
@@ -68,14 +96,14 @@ initializeGrid() {
 
   }
 
-  removePlayer(playerId){
+  remove(playerId){
     this.players[playerId].online = false
   }
 
-  findEmptyPoint(channel){
+  findEmptyPoint(){
     // TODO: Set some sort of limit to how many times this is called recursively
     const [x, y] = this.generateRandomPoint()
-    if (this.grid[x][y][channel] === 0){
+    if (this.grid[x][y][this.channel] === 0){
       return [x, y]
     }
 
@@ -85,6 +113,7 @@ initializeGrid() {
   generateRandomPoint = () => {
     return [Math.floor(Math.random() * this.rows), Math.floor(Math.random() * this.cols)]
   }
+
 }
 
 
