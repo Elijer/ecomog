@@ -23,7 +23,7 @@ export default class Moss extends Item {
     this.grid = grid
   }
 
-  life(){
+  live(){
     
     if (this.maturity += this.maturationInterval * this.young <= 0 && this.young === -1){
       // Check this first to make sure that maturity never goes below 0, which would cause an error with rgbHex
@@ -35,10 +35,15 @@ export default class Moss extends Item {
     if (this.maturity >= this.maxMaturity){
       this.young = -1
     }
+
+    if (this.maturity < .8 && this.maturity > .7 && this.young === 1){
+      console.log(`Moss ${this.id} is reproducing.`)
+      // this.reproduce()
+    }
   }
 
-  death(){
-    console.log(`Moss ${this.id} has died.`)
+  die(){
+    console.log(`Moss ${this.id} has died.`) 
     const [x, y] = this.position
     this.grid[x][y][1] =  null
     delete this.mosses[this.id]
@@ -55,7 +60,9 @@ export default class Moss extends Item {
     }
   }
 
-  // probSurroundings
+  probeSurroundings(){
+
+  }
 
   //   probeSurroundings() {
 //     const viableMoves = [];

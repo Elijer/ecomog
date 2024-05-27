@@ -76,12 +76,12 @@ class GameInstance {
       const [x, y] = value.position
       // try {
         const aMoss = this.grid[x][y][1]
-        aMoss.death()
+        aMoss.die()
 
       if (aMoss.dead){
 
         // TODO: Double check that both parts of deletion are working
-        aMoss.death()
+        aMoss.die()
         // delete this.moss[key]
         // this.grid[value.x][value.y][1] =  null
         return
@@ -89,7 +89,7 @@ class GameInstance {
 
 
 
-      aMoss.life()
+      aMoss.live()
         // console.log("THere was a problem with")
         // console.log(aMoss)
       // if (aMoss.maturity < .8 && aMoss.maturity > .7 && aMoss.young === 1 && aMoss.dead === false){
