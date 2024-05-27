@@ -7,10 +7,9 @@ Refactor:
 - The channels have precedence, so I could, to the client, just send one color per cell, even if there are channels on the server
 */
 
-
-import { v4 as uuidv4 } from 'uuid';
-import rgbHex from 'rgb-hex';
-import { generateRandomColor, generateRed, clamp } from './utilities.mjs'
+import Player from './entities/player.mjs'
+import Moss from './entities/moss.mjs'
+import { Tile, TerrainTile } from './entities/tiles.mjs'
 
 class GameInstance {
   constructor(rows, cols){
@@ -27,7 +26,7 @@ class GameInstance {
     for (let i = 0; i < this.rows; i++) {
       const row = [];
       for (let j = 0; j < this.cols; j++) {
-        row.push([null, null, new BaseTile()]); // Create a new array for each cell
+        row.push([null, null, new TerrainTile()]); // Create a new array for each cell
       }
       grid.push(row);
     }
@@ -70,120 +69,37 @@ class GameInstance {
       }
     })))
   }
-}
 
-class BaseTile {
-  constructor(){
-    this.color = this.getRandomTerrainColor()
-  }
-  
-  // TODO: If I want mineral deposits, it would be more interesting to distribute them less randomly
-  // More like a vein or a deposit
-  getRandomTerrainColor(){
-    const terrainColors = ["#00000", "#010101", "#020202", "#030303", "#040404", "#050505", "#060606", "#070707", "#080808"];
-    
-    return terrainColors[Math.floor(Math.random() * terrainColors.length)]
-  }
+  life(){
+    // Iterate through moss object more efficient than traversing grid
+    for (const [key, value] of Object.entries(this.mosses)){
+      const [x, y] = value.position
+      // try {
+        const aMoss = this.grid[x][y][1]
+        aMoss.death()
 
-  portableState(){
-    return {
-      color: this.color
-    }
-  }
-}
+      if (aMoss.dead){
 
-class Item {
-  constructor(rows, cols, grid, channel = 2){
-    this.rows = rows
-    this.cols = cols
-    this.grid = grid
-    this.position = []
-    this.channel = channel
-  }
+        // TODO: Double check that both parts of deletion are working
+        aMoss.death()
+        // delete this.moss[key]
+        // this.grid[value.x][value.y][1] =  null
+        return
+      }
 
-  findEmptyPoint(){
-    // TODO: Set some sort of limit to how many times this is called recursively
-    const [x, y] = this.generateRandomPoint()
-    if (this.grid[x][y][this.channel] === null){
-      return [x, y]
-    }
 
-    return this.findEmptyPoint()
-  }
 
-  generateRandomPoint = () => {
-    return [Math.floor(Math.random() * this.rows), Math.floor(Math.random() * this.cols)]
-  }
-}
-
-class Player extends Item {
-  constructor(id, players, grid, cols, rows){
-    super(rows, cols, grid, 0)
-    this.players = players
-    this.id = id
-    this.color = generateRandomColor()
-  }
-
-  initialize(){
-    if (this.players[this.id]){
-      this.players[this.id].online = true // TODO: Set online to false when player disconnects
-      return
-    }
-
-    this.create(this.id)
-  }
-
-    // Create a player and assign them a random, empty point on the grid
-  create(playerId){
-    const [x, y] = this.findEmptyPoint()
-    // Can find full object through the grid
-    this.players[playerId] = {
-      position: [x, y],
-    }
-
-    // Can use the object to iterate through players
-    // this.grid[x][y][0] = {
-    //   id: playerId,
-    //   position: [x, y],
-    //   color: generateRandomColor(),
-    //   online: true
-    // }
-    this.grid[x][y][0] = this
-
-  }
-
-  remove(playerId){
-    this.players[playerId].online = false
-  }
-
-  portableState(){
-    return {
-      color: this.color
-    }
-  }
-}
-
-class Moss extends Item {
-
-  static emergence = .01
-
-  constructor(rows, cols, grid, channel = 1, mosses, generation = 1){
-    super(rows, cols, grid, channel)
-    this.mosses = mosses
-    this.position = this.findEmptyPoint()
-    this.rgb = [60, 120, 180]
-    this.generation = generation
-    this.id = uuidv4()
-    this.maturity = .1
-  }
-
-  reflect() {
-    return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], clamp(this.maturity, 0, 1))
-  }
-
-  portableState(){
-    return {
-      color: this.reflect()
+      aMoss.life()
+        // console.log("THere was a problem with")
+        // console.log(aMoss)
+      // if (aMoss.maturity < .8 && aMoss.maturity > .7 && aMoss.young === 1 && aMoss.dead === false){
+      //   const move = aMoss.viableMove()
+      //   this.grid[move[0]][move[1]][1] = new Moss(move[0], move[1],[this.rows, this.cols], aMoss.generation + 1)
+      //   this.moss[this.grid[move[0]][move[1]][1].id] = {
+      //     x: move[0],
+      //     y: move[1]
+      //   }
+      // }
     }
   }
 }
@@ -212,7 +128,7 @@ class Moss extends Item {
   //     const aMoss = this.grid[value.x][value.y][1]
 
   //     if (aMoss.dead){
-  //       this.grid[value.x][value.y][1] = new BaseTile()
+  //       this.grid[value.x][value.y][1] = new TerrainTile()
   //       delete this.moss[key]
   //       return
   //     }

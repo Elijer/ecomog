@@ -5,6 +5,7 @@ export default class God {
   }
 
   createWorld(){
+    console.log(this.game)
     let box = document.getElementById('box')
     box.innerHTML = ''
     for (let y = 0; y < this.game.rows; y++) {
@@ -15,6 +16,7 @@ export default class God {
 
         // Player channel
         if (this.game.grid[x][y][0]){
+          // console.log(this.game.grid[x][y][0])
           // console.log(this.game.grid[x][y][0])
           sq.style.backgroundColor = this.game.grid[x][y][0].color
         } else if (this.game.grid[x][y][1]){

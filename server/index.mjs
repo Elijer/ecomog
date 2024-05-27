@@ -4,11 +4,12 @@ import GameInstance from './initialization.mjs';
 
 const dim = 30
 const game = new GameInstance(dim, dim);
-// const lifeSpeed = 1000
-// setInterval(() => {
-//   game.life()
-//   io.emit("life", game.portableState())
-// }, lifeSpeed)
+const lifeSpeed = 1000
+setInterval(() => {
+  console.log("life")
+  game.life()
+  // io.emit("life", game.portableState())
+}, lifeSpeed)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
