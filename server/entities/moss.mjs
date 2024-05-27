@@ -16,7 +16,7 @@ export default class Moss extends Item {
     this.rgb = [60, 180, 160]
     this.generation = generation
     this.id = uuidv4()
-    this.maturity = .1 // seems to be6the lowest value that we can really get something with with rgbHex
+    this.maturity = .01 // seems to be6the lowest value that we can really get something with with rgbHex
     this.dead = false
     this.youth = 1
     this.maxMaturity = 1
@@ -29,10 +29,10 @@ export default class Moss extends Item {
 
     if (this.youth === -1 && this.maturity <= .01) this.die()
     this.maturity += this.maturationInterval * this.youth
-    if (this.maturity >= this.maxMaturity) this.youth = -1.1
-    if (this.maturity >= .7 && this.maturity <= .8 && this.youth === 1){
+    if (this.maturity >= .8){
       this.attemptReproduction()
     }
+    if (this.maturity >= this.maxMaturity) this.youth = -1.1
     // const neighbors = this.probeSurroundings().filter(move => move[2] === "occupied")
     // if (this.maturity >= .6 && neighbors.length >= 3 ){
     //   this.reproductive === false
