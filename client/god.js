@@ -28,7 +28,6 @@ export default class God {
   }
 
   letTimeFlow(game){
-    console.log(game.grid)
     for (let y = 0; y < game.rows; y++) {
       for (let x = 0; x < game.cols; x++) {
         const moss = game.grid[x][y][1];

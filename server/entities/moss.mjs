@@ -5,7 +5,7 @@ import { Item } from './tiles.mjs'
 
 export default class Moss extends Item {
 
-  static emergence = .1
+  static emergence = .005
 
   constructor(rows, cols, grid, mosses, position, generation = 1){
     super(rows, cols, grid, 1)
@@ -13,38 +13,30 @@ export default class Moss extends Item {
     this.mosses = mosses
     // Consider removing this - is this bloat?
     this.position = position && position.length ? position : this.findEmptyPoint()
-    this.rgb = [60, 120, 180]
+    this.rgb = [60, 180, 160]
     this.generation = generation
     this.id = uuidv4()
     this.maturity = .1 // seems to be6the lowest value that we can really get something with with rgbHex
     this.dead = false
-    this.young = 1
-    this.maxMaturity = .9
-    this.maturationInterval = .1
+    this.youth = 1
+    this.maxMaturity = 1
+    this.maturationInterval = .01
     // Consider removing this --- is this bloat?
     this.grid = grid
-    this.reproduced = false
   }
 
   live(){
-    let maturity = this.maturity
-    let rideOnTheCart = (maturity += this.maturationInterval * this.young) < .1
-    
-    if (rideOnTheCart){
-      this.die() // Can I do this from within the class or do I have to do it outside?
-      // Check this first to make sure that maturity never goes below 0, which would cause an error with rgbHex
-      // this.dead = true
-      return
-    }
 
-    this.maturity += this.maturationInterval * this.young
-    if (this.maturity >= this.maxMaturity){
-      this.young = -1
-    }
-
-    if (this.maturity < .8 && this.maturity > .7 && this.young === 1){
+    if (this.youth === -1 && this.maturity <= .01) this.die()
+    this.maturity += this.maturationInterval * this.youth
+    if (this.maturity >= this.maxMaturity) this.youth = -1.1
+    if (this.maturity >= .7 && this.maturity <= .8 && this.youth === 1){
       this.attemptReproduction()
     }
+    // const neighbors = this.probeSurroundings().filter(move => move[2] === "occupied")
+    // if (this.maturity >= .6 && neighbors.length >= 3 ){
+    //   this.reproductive === false
+    // }
   }
 
   die(){
@@ -54,7 +46,7 @@ export default class Moss extends Item {
   }
 
   attemptReproduction(){
-    if (this.reproduced) return
+    // console.log("Attempting Reproduction")
     const viableMove = this.viableMove()
     if (viableMove){
       // Time to get busy
@@ -64,7 +56,6 @@ export default class Moss extends Item {
         position: [x, y]
       }
       this.grid[x][y][1] = newMoss
-      this.reproduced = true
     }
   }
 
@@ -95,9 +86,10 @@ export default class Moss extends Item {
     for (const [dx, dy] of directions) {
       const newX = this.position[0] + dx;
       const newY = this.position[1] + dy;
-
-      if (newX >= 0 && newX < this.cols -1 && newY >= 0 && newY < this.rows -1 && !this.grid[newX][newY][1]) {
-        viableMoves.push([newX, newY]);
+      if (newX >= 0 && newX < this.cols -1 && newY >= 0 && newY < this.rows -1){
+        let occupant = this.grid[newX][newY][1]
+        let move = [newX, newY, occupant ? "occupied" : "empty"]
+        viableMoves.push(move)
       }
     }
     return viableMoves
@@ -107,11 +99,14 @@ export default class Moss extends Item {
   // For example, the terrain - terrain on map with a higher value could be prioritized
   // Then, if this isn't enough, the next square in that direction could be calculated as well, and so on (this would rarely be necessary), but would break ties
   viableMove(){
+    console.log("Starter", this.position)
+    // const viableMoves = this.probeSurroundings().filter(move => move[2] === "empty")
     const viableMoves = this.probeSurroundings()
     if (viableMoves.length === 0) {
       return null
     }
     const randomMove = viableMoves[Math.floor(Math.random() * viableMoves.length)]
+    console.log("ender", randomMove)
     return randomMove
   }
 }

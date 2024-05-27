@@ -5,9 +5,8 @@ import Moss from './entities/moss.mjs';
 
 const dim = 50
 const game = new GameInstance(dim, dim);
-const lifeSpeed = 240
+const lifeSpeed = 100
 setInterval(() => {
-  console.log("life")
   game.life()
   io.emit("life", game.portableState())
 }, lifeSpeed)

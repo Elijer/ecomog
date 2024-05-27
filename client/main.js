@@ -12,7 +12,7 @@ const mapConfig = {
 const  socket = io("ws://localhost:3000")
 socket.on("connect", () => {
   console.log("Connected")
-  console.log(socket.emit("player joined", playerId()))
+  socket.emit("player joined", playerId())
 });
 
 socket.on("initial game state", (game) => {
