@@ -6,7 +6,7 @@ import God from './god.js'
 let god;
 const playerId = () => localStorage.getItem('playerId') || localStorage.setItem('playerId', uuidv4())
 const mapConfig = {
-  sqSize: 7
+  sqSize: 4
 }
 
 const  socket = io("ws://localhost:3000")
@@ -20,10 +20,9 @@ socket.on("initial game state", (game) => {
   god.createWorld()
 })
 
-// socket.on("life", (game) => {
-//   console.log(game)
-//   god.letTimeFlow(game)
-// })
+socket.on("life", (game) => {
+  god.letTimeFlow(game)
+})
 
 socket.on("disconnect", (reason, details) => {
   console.log("The server disconnect", reason, details)

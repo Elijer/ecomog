@@ -1,14 +1,15 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import GameInstance from './initialization.mjs';
+import Moss from './entities/moss.mjs';
 
-const dim = 30
+const dim = 50
 const game = new GameInstance(dim, dim);
-const lifeSpeed = 1000
+const lifeSpeed = 240
 setInterval(() => {
   console.log("life")
   game.life()
-  // io.emit("life", game.portableState())
+  io.emit("life", game.portableState())
 }, lifeSpeed)
 
 const httpServer = createServer();
@@ -27,6 +28,11 @@ io.on("connection", (socket) => {
     // console.log(game.players)
     // game.portableState()
     socket.emit("initial game state", game.portableState())
+
+    // Manual Debugging tile by tile
+    // game.grid[0][0][1] = new Moss(dim, dim, game.grid, game.mosses, [0, 0], 1)
+    // game.grid[0][0][1].attemptReproduction()
+    // socket.emit("life", game.portableState())
 
     socket.on("disconnecting", async(reason) => {
       // game.removePlayer(playerId)

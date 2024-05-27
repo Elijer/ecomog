@@ -5,7 +5,6 @@ export default class God {
   }
 
   createWorld(){
-    console.log(this.game)
     let box = document.getElementById('box')
     box.innerHTML = ''
     for (let y = 0; y < this.game.rows; y++) {
@@ -16,8 +15,6 @@ export default class God {
 
         // Player channel
         if (this.game.grid[x][y][0]){
-          // console.log(this.game.grid[x][y][0])
-          // console.log(this.game.grid[x][y][0])
           sq.style.backgroundColor = this.game.grid[x][y][0].color
         } else if (this.game.grid[x][y][1]){
           sq.style.backgroundColor = this.game.grid[x][y][1].color
@@ -30,32 +27,14 @@ export default class God {
     }
   }
 
-  // letTimeFlow(game){
-  //   for (let y = 0; y < game.rows; y++) {
-  //     for (let x = 0; x < game.cols; x++) {
-  //       for (const aMoss of game.moss) {
-  //         console.log(aMoss)
-  //       //   if (aMoss.position[0] === x && aMoss.position[1] === y) {
-  //       //     let sq = document.getElementById(`sq-${x}-${y}`);
-  //       //     sq.style.backgroundColor = white;
-  //       //     // console.log(sq)
-  //       //     // sq.style.backgroundColor = aMoss.color
-  //       //   }
-  //       }
-  //     }
-  //   }
-  //   // console.log  (game)
-  // }
-    
-
   letTimeFlow(game){
+    console.log(game.grid)
     for (let y = 0; y < game.rows; y++) {
       for (let x = 0; x < game.cols; x++) {
-        const item = game.grid[x][y][1];
-        if (item !== 0) {
+        const moss = game.grid[x][y][1];
+        if (moss !== null) {
           let sq = document.getElementById(`$sq-${x}-${y}`)
-          sq.style.backgroundColor = item.color;
-          sq.style.backgroundColor = item.color;
+          sq.style.backgroundColor = moss.color;
         }
       }
     }

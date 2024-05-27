@@ -5,29 +5,35 @@ import { Item } from './tiles.mjs'
 
 export default class Moss extends Item {
 
-  static emergence = .01
+  static emergence = .1
 
-  constructor(rows, cols, grid, channel = 1, mosses, generation = 1){
-    super(rows, cols, grid, channel)
+  constructor(rows, cols, grid, mosses, position, generation = 1){
+    super(rows, cols, grid, 1)
     this.type = "moss"
     this.mosses = mosses
-    this.position = this.findEmptyPoint()
+    // Consider removing this - is this bloat?
+    this.position = position && position.length ? position : this.findEmptyPoint()
     this.rgb = [60, 120, 180]
     this.generation = generation
     this.id = uuidv4()
-    this.maturity = .1
+    this.maturity = .1 // seems to be6the lowest value that we can really get something with with rgbHex
     this.dead = false
     this.young = 1
     this.maxMaturity = .9
     this.maturationInterval = .1
+    // Consider removing this --- is this bloat?
     this.grid = grid
+    this.reproduced = false
   }
 
   live(){
+    let maturity = this.maturity
+    let rideOnTheCart = (maturity += this.maturationInterval * this.young) < .1
     
-    if (this.maturity += this.maturationInterval * this.young <= 0 && this.young === -1){
+    if (rideOnTheCart){
+      this.die() // Can I do this from within the class or do I have to do it outside?
       // Check this first to make sure that maturity never goes below 0, which would cause an error with rgbHex
-      this.dead = true
+      // this.dead = true
       return
     }
 
@@ -37,16 +43,29 @@ export default class Moss extends Item {
     }
 
     if (this.maturity < .8 && this.maturity > .7 && this.young === 1){
-      console.log(`Moss ${this.id} is reproducing.`)
-      // this.reproduce()
+      this.attemptReproduction()
     }
   }
 
   die(){
-    console.log(`Moss ${this.id} has died.`) 
     const [x, y] = this.position
     this.grid[x][y][1] =  null
     delete this.mosses[this.id]
+  }
+
+  attemptReproduction(){
+    if (this.reproduced) return
+    const viableMove = this.viableMove()
+    if (viableMove){
+      // Time to get busy
+      const newMoss = new Moss(this.rows, this.cols, this.grid, this.mosses, viableMove, this.generation + 1)
+      const [x, y] = newMoss.position
+      this.mosses[newMoss.id] = {
+        position: [x, y]
+      }
+      this.grid[x][y][1] = newMoss
+      this.reproduced = true
+    }
   }
 
   reflect() {
@@ -61,37 +80,38 @@ export default class Moss extends Item {
   }
 
   probeSurroundings(){
+    const viableMoves = [];
+    const directions = [
+        [-1,  0], // left
+        [ 1,  0], // right
+        [ 0, -1], // top
+        [ 0,  1], // bottom
+        [-1, -1], // top-left
+        [ 1, -1], // top-right
+        [-1,  1], // bottom-left
+        [ 1,  1]  // bottom-right
+    ];
 
+    for (const [dx, dy] of directions) {
+      const newX = this.position[0] + dx;
+      const newY = this.position[1] + dy;
+
+      if (newX >= 0 && newX < this.cols -1 && newY >= 0 && newY < this.rows -1 && !this.grid[newX][newY][1]) {
+        viableMoves.push([newX, newY]);
+      }
+    }
+    return viableMoves
   }
 
-  //   probeSurroundings() {
-//     const viableMoves = [];
-//     const [x, y] = this.position;
-//     const directions = [
-//         [-1,  0], // left
-//         [ 1,  0], // right
-//         [ 0, -1], // top
-//         [ 0,  1], // bottom
-//         [-1, -1], // top-left
-//         [ 1, -1], // top-right
-//         [-1,  1], // bottom-left
-//         [ 1,  1]  // bottom-right
-//     ];
-
-//     for (const [dx, dy] of directions) {
-//         const newX = x + dx;
-//         const newY = y + dy;
-//         if (newX >= 0 && newX < this.board[0] && newY >= 0 && newY < this.board[1]) {
-//             viableMoves.push([newX, newY]);
-//         }
-//     }
-
-//     return viableMoves;
-//   }
-
-//   viableMove(){
-//     const viableMoves = this.probeSurroundings()
-//     const randomMove = viableMoves[Math.floor(Math.random() * viableMoves.length)]
-//     return randomMove
-//   }
+  // For deterministic behavior, viable moves shouldn't be random but instead rely on something attemptReproductionable
+  // For example, the terrain - terrain on map with a higher value could be prioritized
+  // Then, if this isn't enough, the next square in that direction could be calculated as well, and so on (this would rarely be necessary), but would break ties
+  viableMove(){
+    const viableMoves = this.probeSurroundings()
+    if (viableMoves.length === 0) {
+      return null
+    }
+    const randomMove = viableMoves[Math.floor(Math.random() * viableMoves.length)]
+    return randomMove
+  }
 }

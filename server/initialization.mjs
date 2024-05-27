@@ -41,7 +41,7 @@ class GameInstance {
   initializeMosses(){
     const initialMossCount = this.rows * this.cols * Moss.emergence
     for (let i = 0; i < initialMossCount; i++){
-      const moss = new Moss(this.rows, this.cols, this.grid, 1, this.mosses)
+      const moss = new Moss(this.rows, this.cols, this.grid, this.mosses)
       const [x, y] = moss.position
       this.mosses[moss.id] = {
         position: [x,y]
@@ -71,35 +71,18 @@ class GameInstance {
   }
 
   life(){
-    // Iterate through moss object more efficient than traversing grid
     for (const [key, value] of Object.entries(this.mosses)){
       const [x, y] = value.position
-      // try {
-        const aMoss = this.grid[x][y][1]
-        aMoss.die()
+      const aMoss = this.grid[x][y][1]
+
+      if (!aMoss) return
 
       if (aMoss.dead){
-
-        // TODO: Double check that both parts of deletion are working
         aMoss.die()
-        // delete this.moss[key]
-        // this.grid[value.x][value.y][1] =  null
         return
       }
 
-
-
       aMoss.live()
-        // console.log("THere was a problem with")
-        // console.log(aMoss)
-      // if (aMoss.maturity < .8 && aMoss.maturity > .7 && aMoss.young === 1 && aMoss.dead === false){
-      //   const move = aMoss.viableMove()
-      //   this.grid[move[0]][move[1]][1] = new Moss(move[0], move[1],[this.rows, this.cols], aMoss.generation + 1)
-      //   this.moss[this.grid[move[0]][move[1]][1].id] = {
-      //     x: move[0],
-      //     y: move[1]
-      //   }
-      // }
     }
   }
 }
@@ -206,92 +189,10 @@ class GameInstance {
 
 // class Moss {
 
-//   static emergence = .01
-
-//   constructor(x, y, board, generation){
-//     this.position = [x, y]
-//     this.id = uuidv4()
-//     this.maturity = 0.1
-//     this.red = 60
-//     this.blue = 120
-//     this.green = 180
-//     this.color = this.reflect()
-//     this.maxMaturity = .9
-//     this.young = 1
-//     this.dead = false
-//     this.board = board
-//     this.generation = generation
-//   }
-
-//   isInDecline(){
-//     return this.maturity > this.maxMaturity
-//   }
-
-//   test(){
-//     console.log(this.maturity)
-//   }
-
-//   life(){
-//     if (this.maturity === 7){
-//       //
-//     }
-//     this.maturity += .1 * this.young
-//     if (this.maturity > this.maxMaturity){
-//       this.young = -1
-//       this.maturity = 1
-//     }
-
-//     if (this.maturity < 1){
-//       this.dead = true
-//     }
-//   }
 
 //   damage(){
 //     this.maturity -= 2
 //   }
 
-//   reflect() {
-//     // Because negative values or those above 1 will cause an error with rbga, we have to clamp them
-//     return '#' + rgbHex(this.red, this.green, this.blue, clamp(this.maturity, 0, 1))
-//   }
-  
-//   portableState(){
-//     return {
-//       position: this.position,
-//       color: this.reflect(),
-//     }
-//   }
-
-//   probeSurroundings() {
-//     const viableMoves = [];
-//     const [x, y] = this.position;
-//     const directions = [
-//         [-1,  0], // left
-//         [ 1,  0], // right
-//         [ 0, -1], // top
-//         [ 0,  1], // bottom
-//         [-1, -1], // top-left
-//         [ 1, -1], // top-right
-//         [-1,  1], // bottom-left
-//         [ 1,  1]  // bottom-right
-//     ];
-
-//     for (const [dx, dy] of directions) {
-//         const newX = x + dx;
-//         const newY = y + dy;
-//         if (newX >= 0 && newX < this.board[0] && newY >= 0 && newY < this.board[1]) {
-//             viableMoves.push([newX, newY]);
-//         }
-//     }
-
-//     return viableMoves;
-//   }
-
-//   viableMove(){
-//     const viableMoves = this.probeSurroundings()
-//     const randomMove = viableMoves[Math.floor(Math.random() * viableMoves.length)]
-//     return randomMove
-//   }
-// }
 
 export default GameInstance
