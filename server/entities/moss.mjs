@@ -5,7 +5,7 @@ import { Item } from './tiles.mjs'
 
 export default class Moss extends Item {
 
-  static emergence = .005
+  static emergence = .01
 
   constructor(rows, cols, grid, mosses, position, generation = 1){
     super(rows, cols, grid, 1)
@@ -19,7 +19,7 @@ export default class Moss extends Item {
     this.maturity = .01 // seems to be6the lowest value that we can really get something with with rgbHex
     this.dead = false
     this.youth = 1
-    this.maxMaturity = 1
+    this.maxMaturity = .9
     this.maturationInterval = .01
     // Consider removing this --- is this bloat?
     this.grid = grid
@@ -27,12 +27,22 @@ export default class Moss extends Item {
 
   live(){
 
-    if (this.youth === -1 && this.maturity <= .01) this.die()
     this.maturity += this.maturationInterval * this.youth
-    if (this.maturity >= .8){
-      this.attemptReproduction()
+    if (this.maturity > this.maxMaturity){
+      this.youth = -1
+      this.maturity = 1
     }
-    if (this.maturity >= this.maxMaturity) this.youth = -1.1
+
+    if (this.maturity < 0){
+      this.dead = true
+    }
+
+    // if (this.youth === -1 && this.maturity <= .01) this.die()
+    // this.maturity += this.maturationInterval * this.youth
+    // if (this.maturity >= .8){
+    //   this.attemptReproduction()
+    // }
+    // if (this.maturity >= this.maxMaturity) this.youth = -1.1
     // const neighbors = this.probeSurroundings().filter(move => move[2] === "occupied")
     // if (this.maturity >= .6 && neighbors.length >= 3 ){
     //   this.reproductive === false
@@ -43,6 +53,10 @@ export default class Moss extends Item {
     const [x, y] = this.position
     this.grid[x][y][1] =  null
     delete this.mosses[this.id]
+  }
+
+  isInDecline(){
+    return this.maturity > this.maxMaturity
   }
 
   attemptReproduction(){
