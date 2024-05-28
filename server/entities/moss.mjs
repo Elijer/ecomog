@@ -19,7 +19,7 @@ export default class Moss extends Item {
     this.maturity = .01 // seems to be6the lowest value that we can really get something with with rgbHex
     this.dead = false
     this.youth = 1
-    this.maxMaturity = 100
+    this.maxMaturity = 1
     this.maturationInterval = .01
     // Consider removing this --- is this bloat?
     this.grid = grid
@@ -103,7 +103,15 @@ export default class Moss extends Item {
       const newY = this.position[1] + dy;
       if (newX >= 0 && newX < this.cols -1 && newY >= 0 && newY < this.rows -1){
         let occupant = this.grid[newX][newY][1]
-        let move = [newX, newY, occupant ? "occupied" : "empty"]
+        let move;
+        if (occupant && occupant.maturity < .1){
+          move = [newX, newY, "occupied"]
+        }
+        else if (occupant && occupant.maturity < .7 && occupant.maturity < this.maturity){
+          this.maturity = occupant.maturity
+        } else {
+          move = [newX, newY, "empty"]
+        }
         viableMoves.push(move)
       }
     }
