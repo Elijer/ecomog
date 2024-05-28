@@ -78,7 +78,7 @@ class GameInstance {
       
       if (!aMoss) return
 
-      if (aMoss.maturity < .9 && aMoss.maturity > .6 && aMoss.youth < 1 && aMoss.reproCount < 4){
+      if (aMoss.maturity < .9 && aMoss.maturity > .6 && aMoss.youth < 1){
         aMoss.attemptReproduction()
       }
   
