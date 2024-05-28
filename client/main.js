@@ -6,7 +6,7 @@ import God from './god.js'
 let god;
 const playerId = () => localStorage.getItem('playerId') || localStorage.setItem('playerId', uuidv4())
 const mapConfig = {
-  sqSize: 4
+  sqSize: 2
 }
 
 const  socket = io("ws://localhost:3000")

@@ -3,9 +3,9 @@ import { Server } from 'socket.io';
 import GameInstance from './initialization.mjs';
 import Moss from './entities/moss.mjs';
 
-const dim = 60
+const dim = 120
 const game = new GameInstance(dim, dim);
-const lifeSpeed = 100
+const lifeSpeed = 500
 
 setInterval(() => {
   io.emit("life", game.portableState())
@@ -17,13 +17,13 @@ setInterval(() => {
     const [x, y] = value.position
     const aMoss = game.grid[x][y][1]
     if (aMoss){
-      if (aMoss.maturity > .5 && aMoss.maturity < .8 && aMoss.youth){
+      if (aMoss.maturity > .5 && aMoss.youth){
           const tempInterval = setInterval(() => {
             aMoss.attemptReproduction()
           }, 100)
           setTimeout(() => {
           clearInterval(tempInterval)
-          }, 1200)
+          }, 800)
       }
       
       if (aMoss.maturity > aMoss.maxMaturity){
@@ -32,7 +32,7 @@ setInterval(() => {
       }
     }
   }
-}, 3000)
+}, 6400)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
