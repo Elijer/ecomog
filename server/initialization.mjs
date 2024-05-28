@@ -39,6 +39,7 @@ class GameInstance {
   }
 
   initializeMosses(){
+    // Super weird - when emergence is low, there are initial mosses, but they don't reproduce
     const initialMossCount = this.rows * this.cols * Moss.emergence
     for (let i = 0; i < initialMossCount; i++){
       const moss = new Moss(this.rows, this.cols, this.grid, this.mosses)
@@ -77,9 +78,8 @@ class GameInstance {
       
       if (!aMoss) return
 
-      if (aMoss.maturity > .8 && aMoss.maturity < .9 && aMoss.youth === 1 && aMoss.reproCount < 4){
+      if (aMoss.maturity > .9 && aMoss.maturity < 1 && aMoss.youth === 1 && aMoss.reproCount < 4){
         aMoss.attemptReproduction()
-        aMoss.reproCount += 1
       }
   
       aMoss.live()
