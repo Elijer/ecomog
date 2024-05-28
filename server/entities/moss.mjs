@@ -19,14 +19,13 @@ export default class Moss extends Item {
     this.dead = false
     this.youth = 1
     this.maxMaturity = 1
-    this.maturationInterval = .01
+    this.maturationInterval = .001
     this.grid = grid
   }
 
   live(){
     
     this.maturity += this.maturationInterval * this.youth
-    
     // if (this.maturity > this.maxMaturity){
     //   this.die()
     // }
@@ -98,6 +97,10 @@ export default class Moss extends Item {
 
   viableMove(){
     const viableMoves = this.probeSurroundings()
+    const occupiedMoves = viableMoves.filter(move => move[2] === "occupied")
+    if (occupiedMoves.length === 8){
+      this.die()
+    }
     if (viableMoves.length === 0) {
       return null
     }

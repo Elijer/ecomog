@@ -18,14 +18,16 @@ setInterval(() => {
     const aMoss = game.grid[x][y][1]
     if (aMoss){
       if (aMoss.maturity > .5 && aMoss.maturity < .8){
-        aMoss.attemptReproduction()
-        aMoss.attemptReproduction()
-        aMoss.attemptReproduction()
-        aMoss.attemptReproduction()
+          const tempInterval = setInterval(() => {
+            aMoss.attemptReproduction()
+          }, 100)
+          setTimeout(() => {
+          clearInterval(tempInterval)
+          }, 1200)
       }
       
       if (aMoss.maturity > aMoss.maxMaturity){
-        aMoss.die()
+        aMoss.youth = -1.2
       }
     }
   }
