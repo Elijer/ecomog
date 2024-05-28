@@ -13,16 +13,17 @@ export default class Moss extends Item {
     this.mosses = mosses
     // Consider removing this - is this bloat?
     this.position = position && position.length ? position : this.findEmptyPoint()
-    this.rgb = [60, 180, 160]
+    this.rgb = [60, 180, 120]
     this.generation = generation
     this.id = uuidv4()
     this.maturity = .01 // seems to be6the lowest value that we can really get something with with rgbHex
     this.dead = false
     this.youth = 1
-    this.maxMaturity = .9
+    this.maxMaturity = 100
     this.maturationInterval = .01
     // Consider removing this --- is this bloat?
     this.grid = grid
+    this.reproCount = 0
   }
 
   live(){

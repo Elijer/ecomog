@@ -76,6 +76,11 @@ class GameInstance {
       const aMoss = this.grid[x][y][1]
       
       if (!aMoss) return
+
+      if (aMoss.maturity > .8 && aMoss.maturity < .9 && aMoss.youth === 1 && aMoss.reproCount < 4){
+        aMoss.attemptReproduction()
+        aMoss.reproCount += 1
+      }
   
       aMoss.live()
     }
