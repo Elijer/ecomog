@@ -20,19 +20,19 @@ setInterval(() => {
       if (aMoss.maturity > .5 && aMoss.youth){
           const tempInterval = setInterval(() => {
             aMoss.attemptReproduction()
-          }, 100)
+          }, 400)
           setTimeout(() => {
           clearInterval(tempInterval)
-          }, 800)
+          }, 1600)
       }
       
       if (aMoss.maturity > aMoss.maxMaturity){
-        aMoss.die()
-        // aMoss.youth = -.2
+        // aMoss.die()
+        aMoss.youth = -.1
       }
     }
   }
-}, 6400)
+}, 10000)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
