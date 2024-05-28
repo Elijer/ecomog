@@ -20,7 +20,7 @@ export default class Moss extends Item {
     this.dead = false
     this.youth = 1
     this.maxMaturity = 1
-    this.maturationInterval = .019
+    this.maturationInterval = .1
     // Consider removing this --- is this bloat?
     this.grid = grid
   }
@@ -106,7 +106,6 @@ export default class Moss extends Item {
         viableMoves.push(move)
       }
     }
-    this.maxMaturity /= viableMoves.length
     return viableMoves
   }
 

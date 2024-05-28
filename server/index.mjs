@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import GameInstance from './initialization.mjs';
 import Moss from './entities/moss.mjs';
 
-const dim = 50
+const dim = 60
 const game = new GameInstance(dim, dim);
 const lifeSpeed = 100
 
