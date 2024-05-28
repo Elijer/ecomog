@@ -15,25 +15,25 @@ export default class Moss extends Item {
     this.rgb = [60, 180, 120]
     this.generation = generation
     this.id = uuidv4()
-    this.maturity = .1 // seems to be6the lowest value that we can really get something with with rgbHex
+    this.maturity = .01 // seems to be6the lowest value that we can really get something with with rgbHex
     this.dead = false
     this.youth = 1
     this.maxMaturity = 1
-    this.maturationInterval = .1
+    this.maturationInterval = .01
     this.grid = grid
   }
 
   live(){
-
+    
     this.maturity += this.maturationInterval * this.youth
-    if (this.maturity > this.maxMaturity){
-      this.attemptReproduction()
-      this.die()
-    }
+    
+    // if (this.maturity > this.maxMaturity){
+    //   this.die()
+    // }
 
-    if (this.maturity < 0){
-      this.dead = true
-    }
+    // if (this.maturity < 0){
+    //   this.dead = true
+    // }
   }
 
   die(){

@@ -12,6 +12,22 @@ setInterval(() => {
   game.life()
 }, lifeSpeed)
 
+setInterval(() => {
+  for (const [key, value] of Object.entries(game.mosses)){
+    const [x, y] = value.position
+    const aMoss = game.grid[x][y][1]
+    if (aMoss){
+      if (aMoss.maturity > .5 && aMoss.maturity < .8){
+        aMoss.attemptReproduction()
+      }
+      
+      if (aMoss.maturity > aMoss.maxMaturity){
+        aMoss.die()
+      }
+    }
+  }
+}, 400)
+
 const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {

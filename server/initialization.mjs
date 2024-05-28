@@ -75,7 +75,9 @@ class GameInstance {
     for (const [key, value] of Object.entries(this.mosses)){
       const [x, y] = value.position
       const aMoss = this.grid[x][y][1]
-      if (aMoss) aMoss.live()
+      if (aMoss){
+        aMoss.live()
+      }
     }
   }
 }
