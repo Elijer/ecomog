@@ -5,7 +5,7 @@ import { Item } from './tiles.mjs'
 
 export default class Moss extends Item {
 
-  static emergence = .01
+  static emergence = .0003
 
   constructor(rows, cols, grid, mosses, position, generation = 1){
     super(rows, cols, grid, 1)
@@ -15,28 +15,35 @@ export default class Moss extends Item {
     this.rgb = [60, 180, 120]
     this.generation = generation
     this.id = uuidv4()
-    this.maturity = 0 // seems to be6the lowest value that we can really get something with with rgbHex
+    this.maturity = 0
     this.dead = false
     this.youth = 1
-    this.maxMaturity = 1
-    this.maturationInterval = .01
+    this.maxMaturity = 100
+    this.maturationInterval = 1
     this.grid = grid
   }
 
   live(){
 
+    // Maturation
+    if (this.maturity > this.maxMaturity) this.youth = -1
     this.maturity += this.maturationInterval * this.youth
 
+    // Death
+    if (this.maturity < this.maturationInterval){
+      this.die()
+    }
+
+    // Reproduction
+    if (this.maturity > 80 && this.maturity < 90){
+      this.attemptReproduction()
+    }
   }
 
   die(){
     const [x, y] = this.position
     this.grid[x][y][1] =  null
     delete this.mosses[this.id]
-  }
-
-  isInDecline(){
-    return this.maturity > this.maxMaturity
   }
 
   attemptReproduction(){
@@ -54,7 +61,8 @@ export default class Moss extends Item {
   }
 
   reflect() {
-    return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], clamp(this.maturity, 0, 1))
+    const computedMaturity = this.maturity / this.maxMaturity
+    return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], clamp(computedMaturity, 0, 1))
   }
 
   portableState(){
@@ -93,8 +101,7 @@ export default class Moss extends Item {
     const viableMoves = this.probeSurroundings()
     const occupiedMoves = viableMoves.filter(move => move[2] === "occupied")
     if (occupiedMoves.length > 4){
-      
-      this.youth = -.2
+      this.youth = -1
     }
     if (viableMoves.length === 0) {
       return null

@@ -3,36 +3,36 @@ import { Server } from 'socket.io';
 import GameInstance from './initialization.mjs';
 import Moss from './entities/moss.mjs';
 
-const dim = 120
-const game = new GameInstance(dim, dim);
-const lifeSpeed = 500
+const game = new GameInstance(440, 200);
 
 setInterval(() => {
+  console.time("start")
   io.emit("life", game.portableState())
   game.life()
-}, lifeSpeed)
+  console.timeEnd("start")  
+}, 200)
 
-setInterval(() => {
-  for (const [key, value] of Object.entries(game.mosses)){
-    const [x, y] = value.position
-    const aMoss = game.grid[x][y][1]
-    if (aMoss){
-      if (aMoss.maturity > .5 && aMoss.youth){
-          const tempInterval = setInterval(() => {
-            aMoss.attemptReproduction()
-          }, 400)
-          setTimeout(() => {
-          clearInterval(tempInterval)
-          }, 1600)
-      }
+// setInterval(() => {
+//   console.time("start")
+//   for (const [key, value] of Object.entries(game.mosses)){
+//     const [x, y] = value.position
+//     const aMoss = game.grid[x][y][1]
+//     if (aMoss){
+//       if (aMoss.maturity > .81 && aMoss.youth){
+//         aMoss.reproductiveEra()
+//       }
+
+//       if (aMoss.maturity < aMoss.maturationInterval && aMoss.youth < 0){
+//         aMoss.die()
+//       }
       
-      if (aMoss.maturity > aMoss.maxMaturity){
-        // aMoss.die()
-        aMoss.youth = -.1
-      }
-    }
-  }
-}, 10000)
+//       if (aMoss.maturity > aMoss.maxMaturity){
+//         aMoss.youth = -1
+//       }
+//     }
+//   }
+//   console.timeEnd("start")
+// }, 1000)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {

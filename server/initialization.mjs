@@ -1,11 +1,3 @@
-/*
-Refactor:
-- How to handle empty tiles - with null? Or some sort of empty object?
-- Portable state should probably be a single method that is ineherited by everyone
-- All I am actually sending right now is color, so it might actually be worth it to get rid of channels for now?
-- In any case, each item only needs to return a color actually, and even if I keep channels
-- The channels have precedence, so I could, to the client, just send one color per cell, even if there are channels on the server
-*/
 
 import Player from './entities/player.mjs'
 import Moss from './entities/moss.mjs'
@@ -72,11 +64,14 @@ class GameInstance {
   }
 
   life(){
-    for (const [key, value] of Object.entries(this.mosses)){
+    for (const [_key, value] of Object.entries(this.mosses)){
       const [x, y] = value.position
       const aMoss = this.grid[x][y][1]
       if (aMoss){
         aMoss.live()
+        if (aMoss.dead){
+          aMoss.die()
+        }
       }
     }
   }

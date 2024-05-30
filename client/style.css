@@ -3,6 +3,11 @@ body {
   color: rgb(51, 46, 46);
   margin: auto;
   background: black;
+
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
 }
 
 #instruction, #score {
@@ -10,20 +15,27 @@ body {
 }
 
 #box {
-  margin-top: 20px;
-  width: 600px; /* this is what the margin auto works with. Ah but it's just a trick */
-
+  /* margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(120, 1fr);
+  grid-template-columns: repeat(500, 1fr); */
+  display: grid;
+  grid-template-columns: repeat(400, 1fr);
+  grid-template-rows: repeat(200, 1fr);
+  width: 100vmin;  /* Ensure the grid fits within the viewport */
+  height: 100vmin; /* Maintain square aspect ratio */
 }
 
 .sq {
   border: .1px solid rgba(255, 255, 255, .1);
   font-size: 6px;
+  margin: none;
+  padding: none;
 }
 
 div.row {
   padding-bottom: 0px;
+  padding: none;
+
 }
 
 .con {
@@ -31,4 +43,5 @@ div.row {
   font-size: 60px;
   top: -10px;
   left: -6px;
+  padding: none;
 }

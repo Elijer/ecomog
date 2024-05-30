@@ -7,9 +7,9 @@ export default class God {
   createWorld(){
     let box = document.getElementById('box')
     box.innerHTML = ''
-    for (let y = 0; y < this.game.rows; y++) {
+    for (let y = 0; y < this.game.rows - 1; y++) {
       let row = document.createElement('div')
-      for (let x = 0; x < this.game.cols; x++) {
+      for (let x = 0; x < this.game.cols - 1; x++) {
         let sq = this.createSq(this.sqSize)
         sq.id = `$sq-${x}-${y}`
 
@@ -30,8 +30,8 @@ export default class God {
   letTimeFlow(game){
     for (let y = 0; y < game.rows; y++) {
       for (let x = 0; x < game.cols; x++) {
-        const moss = game.grid[x][y][1];
-        if (moss !== null) {
+        if (game.grid[x][y][1]) {
+          const moss = game.grid[x][y][1];
           let sq = document.getElementById(`$sq-${x}-${y}`)
           sq.style.backgroundColor = moss.color;
         }
