@@ -12,8 +12,8 @@ export default class God {
       for (let x = 0; x < this.game.cols - 1; x++) {
         let sq = this.createSq(this.sqSize)
         sq.id = `$sq-${x}-${y}`
+        console.log(this.game.grid[x][y])
 
-        // Player channel
         if (this.game.grid[x][y][0]){
           sq.style.backgroundColor = this.game.grid[x][y][0].color
         } else if (this.game.grid[x][y][1]){
@@ -28,8 +28,8 @@ export default class God {
   }
 
   letTimeFlow(game){
-    for (let y = 0; y < game.rows; y++) {
-      for (let x = 0; x < game.cols; x++) {
+    for (let y = 0; y < game.rows - 1; y++) {
+      for (let x = 0; x < game.cols - 1; x++) {
         if (game.grid[x][y][1]) {
           const moss = game.grid[x][y][1];
           let sq = document.getElementById(`$sq-${x}-${y}`)

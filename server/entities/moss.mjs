@@ -25,7 +25,7 @@ export default class Moss extends Item {
 
   live(){
 
-    // Maturation
+    //
     if (this.maturity > this.maxMaturity) this.youth = -1
     this.maturity += this.maturationInterval * this.youth
 

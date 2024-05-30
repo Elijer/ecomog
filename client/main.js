@@ -27,3 +27,19 @@ socket.on("life", (game) => {
 socket.on("disconnect", (reason, details) => {
   console.log("The server disconnect", reason, details)
 });
+
+document.addEventListener('keyup', (event) => {
+  const keyName = event.key;
+
+  console.log(`Key released: ${keyName}`);
+
+  // You can add custom logic here
+  if (keyName === 'w'){
+    console.log("W")
+    socket.emit("input event", {playerId, direction: "up"})
+  }
+  if (keyName === 'a') socket.emit("input event", {playerId, direction: "down"})
+  if (keyName === 's') socket.emit("input event", {playerId, direction: "up"})
+  if (keyName === 'd') socket.emit("input event", {playerId, direction: "right"})
+  
+});
