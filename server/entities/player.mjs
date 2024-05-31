@@ -22,18 +22,11 @@ export default class Player extends Item {
     // Create a player and assign them a random, empty point on the grid
   create(playerId){
     const [x, y] = this.findEmptyPoint()
-    // Can find full object through the grid
+
     this.players[playerId] = {
-      position: [x, y],
+      position: [x, y]
     }
 
-    // Can use the object to iterate through players
-    // this.grid[x][y][0] = {
-    //   id: playerId,
-    //   position: [x, y],
-    //   color: generateRandomColor(),
-    //   online: true
-    // }
     this.grid[x][y][0] = this
 
   }

@@ -4,13 +4,14 @@ import Moss from './entities/moss.mjs'
 import { Tile, TerrainTile } from './entities/tiles.mjs'
 
 class GameInstance {
-  constructor(rows, cols){
+  constructor(rows, cols, io){
     this.rows = rows
     this.cols = cols
     this.players = {}
     this.mosses = {}
     this.grid = this.initializeGrid()
     this.initializeMosses()
+    this.io = io
   }
 
   initializeGrid() {
@@ -28,6 +29,29 @@ class GameInstance {
   initializePlayer(playerId){
     const player = new Player(playerId, this.players, this.grid, this.cols, this.rows)
     player.initialize()
+  }
+
+  movePlayer(playerId, direction){
+    // console.log(`Move ${playerId} ${direction}`)
+    const move = {
+      left: [0, -1],
+      right: [0, 1],
+      up: [-1, 0],
+      down: [1, 0]
+    }
+    // const player = this.players[playerId]
+    const [x, y] = this.players[playerId].position
+    const player = this.grid[x][y][0]
+    const [mx, my] = move[direction]
+    const newX = x + mx
+    const newY = y + my
+    // console.log(player.tileExists(newX, newY))
+    if (player.tileExists(newX, newY)){
+      player.position = [newX, newY]
+      this.grid[x][y][0] = null
+      this.grid[newX][newY][0] = player
+      this.players[playerId].position = [newX, newY]
+    }
   }
 
   initializeMosses(){

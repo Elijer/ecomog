@@ -5,22 +5,24 @@ import { Item } from './tiles.mjs'
 
 export default class Moss extends Item {
 
-  static emergence = .0003
+  static emergence = .001
 
   constructor(rows, cols, grid, mosses, position, generation = 1){
     super(rows, cols, grid, 1)
     this.type = "moss"
     this.mosses = mosses
+    this.grid = grid
     this.position = position && position.length ? position : this.findEmptyPoint()
     this.rgb = [60, 180, 120]
     this.generation = generation
     this.id = uuidv4()
-    this.maturity = 0
+
+    // Life Cycle
     this.dead = false
+    this.maturity = 0
     this.youth = 1
     this.maxMaturity = 100
     this.maturationInterval = 1
-    this.grid = grid
   }
 
   live(){
@@ -88,7 +90,7 @@ export default class Moss extends Item {
     for (const [dx, dy] of directions) {
       const newX = this.position[0] + dx;
       const newY = this.position[1] + dy;
-      if (newX >= 0 && newX < this.cols -1 && newY >= 0 && newY < this.rows -1){
+      if (this.tileExists(newX, newY)){
         let occupant = this.grid[newX][newY][1]
         let move = [newX, newY, occupant ? "occupied" : "empty"]
         viableMoves.push(move)

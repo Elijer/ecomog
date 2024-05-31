@@ -28,18 +28,23 @@ socket.on("disconnect", (reason, details) => {
   console.log("The server disconnect", reason, details)
 });
 
-document.addEventListener('keyup', (event) => {
+document.addEventListener('keydown', (event) => {
+  if (socket.connected === false) return
   const keyName = event.key;
 
   console.log(`Key released: ${keyName}`);
 
   // You can add custom logic here
-  if (keyName === 'w'){
-    console.log("W")
-    socket.emit("input event", {playerId, direction: "up"})
+  const directions = {
+    w: "up",
+    a: "left",
+    s: "down",
+    d: "right"
+  };
+
+  if (directions.hasOwnProperty(keyName)) {
+    console.log(keyName.toUpperCase());
+    socket.emit("input event", { playerId: playerId(), direction: directions[keyName] });
   }
-  if (keyName === 'a') socket.emit("input event", {playerId, direction: "down"})
-  if (keyName === 's') socket.emit("input event", {playerId, direction: "up"})
-  if (keyName === 'd') socket.emit("input event", {playerId, direction: "right"})
   
 });

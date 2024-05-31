@@ -12,7 +12,6 @@ export default class God {
       for (let x = 0; x < this.game.cols - 1; x++) {
         let sq = this.createSq(this.sqSize)
         sq.id = `$sq-${x}-${y}`
-        console.log(this.game.grid[x][y])
 
         if (this.game.grid[x][y][0]){
           sq.style.backgroundColor = this.game.grid[x][y][0].color
@@ -30,10 +29,21 @@ export default class God {
   letTimeFlow(game){
     for (let y = 0; y < game.rows - 1; y++) {
       for (let x = 0; x < game.cols - 1; x++) {
-        if (game.grid[x][y][1]) {
+        if (game.grid[x][y][0]) {
+          const player = game.grid[x][y][0];
+          let sq = document.getElementById(`$sq-${x}-${y}`)
+          sq.style.backgroundColor = player.color;
+        } else if (game.grid[x][y][1]) {
           const moss = game.grid[x][y][1];
           let sq = document.getElementById(`$sq-${x}-${y}`)
           sq.style.backgroundColor = moss.color;
+        } else if (game.grid[x][y][2]){
+          const terrain = game.grid[x][y][2];
+          let sq = document.getElementById(`$sq-${x}-${y}`)
+          sq.style.backgroundColor = terrain.color;
+        } else {
+          let sq = document.getElementById(`$sq-${x}-${y}`)
+          sq.style.backgroundColor = "black"
         }
       }
     }

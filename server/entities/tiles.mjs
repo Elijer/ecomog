@@ -10,6 +10,10 @@ export class Tile {
       type: this.type
     }
   }
+
+  tileExists(x, y){
+    return x >= 0 && x < this.cols -1 && y >= 0 && y < this.rows -1
+  }
 }
 
 export class TerrainTile extends Tile {

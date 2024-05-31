@@ -1,15 +1,32 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import GameInstance from './initialization.mjs';
+import GameInstance from './game.mjs';
 import Moss from './entities/moss.mjs';
 
-const game = new GameInstance(100, 100);
-
 setInterval(() => {
-  console.time("start")
+  // console.time("life loop duration")
   io.emit("life", game.portableState())
   game.life()
-  console.timeEnd("start")  
+
+  // console.log(game.grid)
+  let somePlayers = []
+  for (let i = 0; i < game.rows; i++){
+    for (let j = 0; j < game.cols; j++){
+      if (game.grid[i][j][0]){
+        somePlayers.push(game.grid[i][j][0].id)
+        // console.log(game.grid[i][j][0].id)
+      }
+    }
+  }
+
+  // console.log(somePlayers.length)
+
+  // for (const x of game.grid){
+  //   for (const y of game.grid){
+  //     console.log(game.grid[x][y][0])
+  //   }
+  // }
+  // console.timeEnd("life loop duration")  
 }, 200)
 
 const httpServer = createServer();
@@ -20,14 +37,19 @@ const io = new Server(httpServer, {
   }
 });
 
+const game = new GameInstance(100, 100, io);
 
 io.on("connection", (socket) => {
 
   console.log("Connected")
 
-  io.on("input event", (event) => {
-    console.log(event)
+
+  socket.on("input event", (event) => {
+    game.movePlayer(event.playerId, event.direction)
+    io.emit("life", game.portableState())
+
   })
+
 
   socket.on("player joined", (playerId) => {
     game.initializePlayer(playerId)
@@ -39,9 +61,7 @@ io.on("connection", (socket) => {
     // socket.emit("life", game.portableState())
 
     socket.on("disconnecting", async(reason) => {
-      // game.removePlayer(playerId)
       console.log("Removed a player and now here is our game state")
-      // console.log(game.players)
     })
   })
 });
