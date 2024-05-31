@@ -10,7 +10,7 @@ setInterval(() => {
   io.emit("life", game.portableState())
   game.life()
   console.timeEnd("start")  
-}, 2000)
+}, 200)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
