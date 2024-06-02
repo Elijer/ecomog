@@ -37,7 +37,7 @@ const io = new Server(httpServer, {
   }
 });
 
-const game = new GameInstance(100, 100, io);
+const game = new GameInstance(10, 10, io);
 
 io.on("connection", (socket) => {
 

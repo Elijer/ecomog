@@ -13,13 +13,10 @@ export default class God {
         let sq = this.createSq(this.sqSize)
         sq.id = `$sq-${x}-${y}`
 
-        if (this.game.grid[x][y][0]){
-          sq.style.backgroundColor = this.game.grid[x][y][0].color
-        } else if (this.game.grid[x][y][1]){
-          sq.style.backgroundColor = this.game.grid[x][y][1].color
-        } else {
-          sq.style.backgroundColor = this.game.grid[x][y][2].color
+        for (let i=0; i++; i < 3){
+          sq.style.backgroundColor = this.game.grid[x][y][i].color
         }
+        
         row.appendChild(sq);
       }
       box.appendChild(row);
@@ -29,22 +26,38 @@ export default class God {
   letTimeFlow(game){
     for (let y = 0; y < game.rows - 1; y++) {
       for (let x = 0; x < game.cols - 1; x++) {
-        if (game.grid[x][y][0]) {
-          const player = game.grid[x][y][0];
-          let sq = document.getElementById(`$sq-${x}-${y}`)
-          sq.style.backgroundColor = player.color;
-        } else if (game.grid[x][y][1]) {
-          const moss = game.grid[x][y][1];
-          let sq = document.getElementById(`$sq-${x}-${y}`)
-          sq.style.backgroundColor = moss.color;
-        } else if (game.grid[x][y][2]){
-          const terrain = game.grid[x][y][2];
-          let sq = document.getElementById(`$sq-${x}-${y}`)
-          sq.style.backgroundColor = terrain.color;
-        } else {
-          let sq = document.getElementById(`$sq-${x}-${y}`)
-          sq.style.backgroundColor = "black"
+        let sq = document.getElementById(`$sq-${x}-${y}`)
+        let tile = game.grid[x][y]
+
+        // if (tile[2]){
+        // sq.style.backgroundColor = tile[2].color
+        // }
+        sq.style.backgroundColor = tile[2].color
+        if (tile[0]){
+           sq.style.backgroundColor = tile[0].color
+        } else if (tile[1]) {
+          sq.style.backgroundColor = tile[1].color
         }
+
+        // if (tile[0]){
+        //   sq.style.backgroundColor = tile[0].color
+        // }
+
+        // if (tile[0]){
+        //   sq.style.backgroundColor = tile[0].color
+        // } else if {
+        //   sq.style.backgroundColor = tile[1].color
+        // } else if {
+        //   sq.style.backgroundColor = tile[2].color
+        // }
+        
+        // sq.style.backgroundColor = tile[2].color
+        // for (let i=2; i--; i > -1){
+        //   if (tile[i]){
+        //     sq.style.backgroundColor = tile[i].color
+        //     break
+        //   }
+        // }
       }
     }
   }

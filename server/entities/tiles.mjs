@@ -26,7 +26,7 @@ export class TerrainTile extends Tile {
   // TODO: If I want mineral deposits, it would be more interesting to distribute them less randomly
   // More like a vein or a deposit
   getRandomTerrainColor(){
-    const terrainColors = ["#00000", "#010101", "#020202", "#030303", "#040404", "#050505", "#060606", "#070707", "#080808", "#090909"];
+    const terrainColors = ["#010101", "#010101", "#020202", "#030303", "#040404", "#050505", "#060606", "#070707", "#080808", "#090909"];
     return terrainColors[Math.floor(Math.random() * terrainColors.length)]
   }
 }

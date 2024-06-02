@@ -32,7 +32,6 @@ class GameInstance {
   }
 
   movePlayer(playerId, direction){
-    // console.log(`Move ${playerId} ${direction}`)
     const move = {
       left: [0, -1],
       right: [0, 1],
