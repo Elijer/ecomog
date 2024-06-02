@@ -28,36 +28,13 @@ export default class God {
       for (let x = 0; x < game.cols - 1; x++) {
         let sq = document.getElementById(`$sq-${x}-${y}`)
         let tile = game.grid[x][y]
-
-        // if (tile[2]){
-        // sq.style.backgroundColor = tile[2].color
-        // }
-        sq.style.backgroundColor = tile[2].color
         if (tile[0]){
            sq.style.backgroundColor = tile[0].color
         } else if (tile[1]) {
           sq.style.backgroundColor = tile[1].color
+        } else {
+          sq.style.backgroundColor = tile[2].color
         }
-
-        // if (tile[0]){
-        //   sq.style.backgroundColor = tile[0].color
-        // }
-
-        // if (tile[0]){
-        //   sq.style.backgroundColor = tile[0].color
-        // } else if {
-        //   sq.style.backgroundColor = tile[1].color
-        // } else if {
-        //   sq.style.backgroundColor = tile[2].color
-        // }
-        
-        // sq.style.backgroundColor = tile[2].color
-        // for (let i=2; i--; i > -1){
-        //   if (tile[i]){
-        //     sq.style.backgroundColor = tile[i].color
-        //     break
-        //   }
-        // }
       }
     }
   }

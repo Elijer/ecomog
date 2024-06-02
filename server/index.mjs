@@ -4,11 +4,9 @@ import GameInstance from './game.mjs';
 import Moss from './entities/moss.mjs';
 
 setInterval(() => {
-  // console.time("life loop duration")
   io.emit("life", game.portableState())
   game.life()
 
-  // console.log(game.grid)
   let somePlayers = []
   for (let i = 0; i < game.rows; i++){
     for (let j = 0; j < game.cols; j++){
@@ -18,15 +16,7 @@ setInterval(() => {
       }
     }
   }
-
-  // console.log(somePlayers.length)
-
-  // for (const x of game.grid){
-  //   for (const y of game.grid){
-  //     console.log(game.grid[x][y][0])
-  //   }
-  // }
-  // console.timeEnd("life loop duration")  
+ 
 }, 200)
 
 const httpServer = createServer();
@@ -37,7 +27,7 @@ const io = new Server(httpServer, {
   }
 });
 
-const game = new GameInstance(10, 10, io);
+const game = new GameInstance(100, 100);
 
 io.on("connection", (socket) => {
 

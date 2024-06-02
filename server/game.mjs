@@ -4,14 +4,13 @@ import Moss from './entities/moss.mjs'
 import { Tile, TerrainTile } from './entities/tiles.mjs'
 
 class GameInstance {
-  constructor(rows, cols, io){
+  constructor(rows, cols){
     this.rows = rows
     this.cols = cols
     this.players = {}
     this.mosses = {}
     this.grid = this.initializeGrid()
     this.initializeMosses()
-    this.io = io
   }
 
   initializeGrid() {
