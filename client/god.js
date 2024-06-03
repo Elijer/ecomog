@@ -2,40 +2,10 @@ export default class God {
   constructor(game, mapConfig){
     this.game = game
     this.sqSize = mapConfig.sqSize
-    this.selectedCell = null
 
     // Debugging
+    this.selectedCell = null
   }
-
-  // debuggingDisplay(element, tile, x, y, grid){
-
-  //   element.addEventListener("mouseOver", (event) => {
-  //     console.log("HEY")
-  //     console.log(grid[x][y][1])
-  //   })
-
-  //   const popup = document.getElementById('popup')
-  //   const popupX = document.getElementById('popup-x')
-  //   const popupY = document.getElementById('popup-y')
-  //   const popupMaturity = document.getElementById('popup-maturity')
-
-  //   // element.addEventListener("mouseover", (event) => {
-  //   //   const updatePopupContent = setInterval(() => {
-  //   //     console.log(grid[x][y][1])
-  //   //     // popup.style.display = "block"
-  //   //     // popupX.innerHTML = `x: ${grid[x][y][1].position[0]}`
-  //   //     // popupY.innerHTML = `y: ${grid[x][y][1].position[1]}`
-  //   //     // popupMaturity.innerHTML = `maturity: ${grid[x][y][1].maturity}`
-
-  //   //   }, 1200) // TODO - synchronize this with lifespeed somehow
-
-  //     // element.addEventListener("mouseout", (event) => {
-  //     //   popup.style.display = 'none';
-  //     //   clearInterval(updatePopupContent);
-  //     // }, {once: true})
-
-  //   // })
-  // }
 
   createWorld(){
 
@@ -56,7 +26,6 @@ export default class God {
       box.appendChild(row);
     }
 
-    // Listen for mouse events
     // Listen for mouse events
     box.addEventListener("mouseover", (event) => {
       if (!event.fromElement || !event.fromElement.dataset) return
@@ -86,7 +55,6 @@ export default class God {
           popupX.innerHTML = `x: ${x}`
           popupY.innerHTML = `y: ${y}`
           popupMaturity.innerHTML = `maturity: ${grid[x][y][1].maturity}`
-          // console.log(grid[x][y][1].maturity)
         } else {
           popup.style.display = "none"
         }
@@ -128,12 +96,4 @@ export default class God {
     return sq;
   }
 
-  // getPlayerAtPosition(x, y) {
-  //   for (let player of this.game.players) {
-  //     if (player.position[0] === x && player.position[1] === y) {
-  //       return player;
-  //     }
-  //   }
-  //   return null;
-  // }
 }
