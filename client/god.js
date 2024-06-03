@@ -2,7 +2,40 @@ export default class God {
   constructor(game, mapConfig){
     this.game = game
     this.sqSize = mapConfig.sqSize
+    this.selectedCell = null
+
+    // Debugging
   }
+
+  // debuggingDisplay(element, tile, x, y, grid){
+
+  //   element.addEventListener("mouseOver", (event) => {
+  //     console.log("HEY")
+  //     console.log(grid[x][y][1])
+  //   })
+
+  //   const popup = document.getElementById('popup')
+  //   const popupX = document.getElementById('popup-x')
+  //   const popupY = document.getElementById('popup-y')
+  //   const popupMaturity = document.getElementById('popup-maturity')
+
+  //   // element.addEventListener("mouseover", (event) => {
+  //   //   const updatePopupContent = setInterval(() => {
+  //   //     console.log(grid[x][y][1])
+  //   //     // popup.style.display = "block"
+  //   //     // popupX.innerHTML = `x: ${grid[x][y][1].position[0]}`
+  //   //     // popupY.innerHTML = `y: ${grid[x][y][1].position[1]}`
+  //   //     // popupMaturity.innerHTML = `maturity: ${grid[x][y][1].maturity}`
+
+  //   //   }, 1200) // TODO - synchronize this with lifespeed somehow
+
+  //     // element.addEventListener("mouseout", (event) => {
+  //     //   popup.style.display = 'none';
+  //     //   clearInterval(updatePopupContent);
+  //     // }, {once: true})
+
+  //   // })
+  // }
 
   createWorld(){
 
@@ -22,37 +55,43 @@ export default class God {
       }
       box.appendChild(row);
     }
+
+    // Listen for mouse events
+    // Listen for mouse events
+    box.addEventListener("mouseover", (event) => {
+      let elData = event.fromElement.dataset
+      if (elData.x && elData.y){
+        this.selectedCell = [elData.x, elData.y]
+      } else {
+        this.selectedCell = null
+      }
+    })
+
+  }
+
+  printCellData = (grid) => {
+    if (this.selectedCell){
+      if (this.selectedCell){
+        const [x, y] = this.selectedCell
+        if (grid[x][y] && grid[x][y][1]) {
+          console.log(grid[x][y][1].maturity)
+        }
+      }
+    }
   }
 
   letTimeFlow(game){
+
     for (let y = 0; y < game.rows - 1; y++) {
       for (let x = 0; x < game.cols - 1; x++) {
         let sq = document.getElementById(`$sq-${x}-${y}`)
+        sq.setAttribute("data-x", x)
+        sq.setAttribute("data-y", y)
         let tile = game.grid[x][y]
         if (tile[0]){
            sq.style.backgroundColor = tile[0].color
         } else if (tile[1]) {
           sq.style.backgroundColor = tile[1].color
-
-          const popup = document.getElementById('popup')
-          const popupX = document.getElementById('popup-x')
-          const popupY = document.getElementById('popup-y')
-          const popupMaturity = document.getElementById('popup-maturity')
-
-          sq.addEventListener("mouseover", (event) => {
-            // console.log(`x: ${x}, y: ${y}`, this.game.grid[x][y])
-            popup.style.display = "block"
-            popup.style.left = `${event.pageX}px`
-            popup.style.top = `${event.pageY}px`
-            popupX.innerHTML = `x: ${x}`
-            popupY.innerHTML = `y: ${y}`
-            popupMaturity.innerHTML = `maturity: ${tile[1].maturity}`
-          })
-  
-          sq.addEventListener("mouseout", (event) => {
-            popup.style.display = 'none';
-          })
-
         } else if (tile[3]){
           sq.style.backgroundColor = tile[3].color
         } else {

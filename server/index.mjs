@@ -1,7 +1,8 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import GameInstance from './game.mjs';
-import Moss from './entities/moss.mjs';
+
+const lifeSpeed = 800
 
 setInterval(() => {
   io.emit("life", game.portableState())
@@ -16,7 +17,7 @@ setInterval(() => {
     }
   }
  
-}, 100)
+}, lifeSpeed)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {

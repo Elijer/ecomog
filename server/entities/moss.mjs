@@ -24,14 +24,19 @@ export default class Moss extends Item {
   }
 
   live(){
+
+    // Aging
     if (this.maturity > this.maxMaturity) this.youth = -2
     this.maturity += this.maturationInterval * this.youth
 
     // Reproduction
-    if (this.maturity % 3 === 0 && this.youth < 0 && this.maturity < 19){
+    // if (this.maturity % 3 === 0 && this.youth < 0 && this.maturity < 19){ // More cyclical reproduction
+    // if (this.maturity % 3 === 0){ // very gradient, wavy trippy aging
+    if (this.maturity % 17 === 0){ // very gradient, wavy trippy aging
       this.attemptReproduction()
     }
 
+    // Death
     if (this.maturity < 0) this.die()
   }
 

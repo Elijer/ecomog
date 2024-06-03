@@ -22,6 +22,7 @@ socket.on("initial game state", (game) => {
 
 socket.on("life", (game) => {
   god.letTimeFlow(game)
+  god.printCellData(game.grid)
 })
 
 socket.on("disconnect", (reason, details) => {
