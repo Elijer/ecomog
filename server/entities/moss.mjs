@@ -31,6 +31,8 @@ export default class Moss extends Item {
     if (this.maturity % 3 === 0 && this.youth < 0 && this.maturity < 19){
       this.attemptReproduction()
     }
+
+    if (this.maturity < 0) this.die()
   }
 
   die(){
