@@ -59,7 +59,9 @@ export default class God {
     // Listen for mouse events
     // Listen for mouse events
     box.addEventListener("mouseover", (event) => {
-      let elData = event.fromElement.dataset
+      if (!event.fromElement || !event.fromElement.dataset) return
+      let el = event.fromElement
+      let elData = el.dataset
       if (elData.x && elData.y){
         this.selectedCell = [elData.x, elData.y]
       } else {
@@ -70,11 +72,23 @@ export default class God {
   }
 
   printCellData = (grid) => {
+
+    const popup = document.getElementById('popup');
+    const popupX = document.getElementById('popup-x');
+    const popupY = document.getElementById('popup-y');
+    const popupMaturity = document.getElementById('popup-maturity');
+    
     if (this.selectedCell){
       if (this.selectedCell){
         const [x, y] = this.selectedCell
         if (grid[x][y] && grid[x][y][1]) {
-          console.log(grid[x][y][1].maturity)
+          popup.style.display = "block"
+          popupX.innerHTML = `x: ${x}`
+          popupY.innerHTML = `y: ${y}`
+          popupMaturity.innerHTML = `maturity: ${grid[x][y][1].maturity}`
+          // console.log(grid[x][y][1].maturity)
+        } else {
+          popup.style.display = "none"
         }
       }
     }
