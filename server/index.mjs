@@ -5,6 +5,7 @@ import GameInstance from './game.mjs';
 const lifeSpeed = 800
 
 setInterval(() => {
+  console.time("life")
   io.emit("life", game.portableState())
   game.life()
 
@@ -16,7 +17,7 @@ setInterval(() => {
       }
     }
   }
- 
+ console.timeEnd("life")
 }, lifeSpeed)
 
 const httpServer = createServer();
