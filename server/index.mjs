@@ -12,12 +12,11 @@ setInterval(() => {
     for (let j = 0; j < game.cols; j++){
       if (game.grid[i][j][0]){
         somePlayers.push(game.grid[i][j][0].id)
-        // console.log(game.grid[i][j][0].id)
       }
     }
   }
  
-}, 200)
+}, 100)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {

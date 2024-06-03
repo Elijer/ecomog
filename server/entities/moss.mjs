@@ -5,12 +5,11 @@ import { Item } from './tiles.mjs'
 
 export default class Moss extends Item {
 
-  static emergence = .001
+  static emergence = .0005
 
-  constructor(rows, cols, grid, mosses, position, generation = 1){
+  constructor(rows, cols, grid, instances, position, generation = 1){
     super(rows, cols, grid, 1)
-    this.type = "moss"
-    this.mosses = mosses
+    this.instances = instances
     this.grid = grid
     this.position = position && position.length ? position : this.findEmptyPoint()
     this.rgb = [60, 180, 120]
@@ -18,26 +17,18 @@ export default class Moss extends Item {
     this.id = uuidv4()
 
     // Life Cycle
-    this.dead = false
     this.maturity = 0
+    this.maturationInterval = 1
     this.youth = 1
     this.maxMaturity = 100
-    this.maturationInterval = 1
   }
 
   live(){
-
-    //
-    if (this.maturity > this.maxMaturity) this.youth = -1
+    if (this.maturity > this.maxMaturity) this.youth = -2
     this.maturity += this.maturationInterval * this.youth
 
-    // Death
-    if (this.maturity < this.maturationInterval){
-      this.die()
-    }
-
     // Reproduction
-    if (this.maturity > 80 && this.maturity < 90){
+    if (this.maturity % 3 === 0 && this.youth < 0 && this.maturity < 19){
       this.attemptReproduction()
     }
   }
@@ -45,17 +36,16 @@ export default class Moss extends Item {
   die(){
     const [x, y] = this.position
     this.grid[x][y][1] =  null
-    delete this.mosses[this.id]
+    delete this.instances[this.id]
   }
 
   attemptReproduction(){
-    // console.log("Attempting Reproduction")
     const viableMove = this.viableMove()
     if (viableMove){
       // Time to get busy
-      const newMoss = new Moss(this.rows, this.cols, this.grid, this.mosses, viableMove, this.generation + 1)
+      const newMoss = new Moss(this.rows, this.cols, this.grid, this.instances, viableMove, this.generation + 1)
       const [x, y] = newMoss.position
-      this.mosses[newMoss.id] = {
+      this.instances[newMoss.id] = {
         position: [x, y]
       }
       this.grid[x][y][1] = newMoss
@@ -70,7 +60,8 @@ export default class Moss extends Item {
   portableState(){
     return {
       type: this.type,
-      color: this.reflect()
+      color: this.reflect(),
+      maturity: this.maturity
     }
   }
 
@@ -92,8 +83,7 @@ export default class Moss extends Item {
       const newY = this.position[1] + dy;
       if (this.tileExists(newX, newY)){
         let occupant = this.grid[newX][newY][1]
-        let move = [newX, newY, occupant ? "occupied" : "empty"]
-        viableMoves.push(move)
+        if (!occupant )viableMoves.push([newX, newY, "empty"])
       }
     }
     return viableMoves
@@ -101,13 +91,9 @@ export default class Moss extends Item {
 
   viableMove(){
     const viableMoves = this.probeSurroundings()
-    const occupiedMoves = viableMoves.filter(move => move[2] === "occupied")
-    if (occupiedMoves.length > 4){
-      this.youth = -1
-    }
-    if (viableMoves.length === 0) {
-      return null
-    }
+    
+    if (viableMoves.length === 0) return
+
     const randomMove = viableMoves[Math.floor(Math.random() * viableMoves.length)]
     return randomMove
   }

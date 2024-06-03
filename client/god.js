@@ -5,6 +5,7 @@ export default class God {
   }
 
   createWorld(){
+
     let box = document.getElementById('box')
     box.innerHTML = ''
     for (let y = 0; y < this.game.rows - 1; y++) {
@@ -13,7 +14,7 @@ export default class God {
         let sq = this.createSq(this.sqSize)
         sq.id = `$sq-${x}-${y}`
 
-        for (let i=0; i++; i < 3){
+        for (let i=0; i++; i < 4){
           sq.style.backgroundColor = this.game.grid[x][y][i].color
         }
         
@@ -32,6 +33,28 @@ export default class God {
            sq.style.backgroundColor = tile[0].color
         } else if (tile[1]) {
           sq.style.backgroundColor = tile[1].color
+
+          const popup = document.getElementById('popup')
+          const popupX = document.getElementById('popup-x')
+          const popupY = document.getElementById('popup-y')
+          const popupMaturity = document.getElementById('popup-maturity')
+
+          sq.addEventListener("mouseover", (event) => {
+            // console.log(`x: ${x}, y: ${y}`, this.game.grid[x][y])
+            popup.style.display = "block"
+            popup.style.left = `${event.pageX}px`
+            popup.style.top = `${event.pageY}px`
+            popupX.innerHTML = `x: ${x}`
+            popupY.innerHTML = `y: ${y}`
+            popupMaturity.innerHTML = `maturity: ${tile[1].maturity}`
+          })
+  
+          sq.addEventListener("mouseout", (event) => {
+            popup.style.display = 'none';
+          })
+
+        } else if (tile[3]){
+          sq.style.backgroundColor = tile[3].color
         } else {
           sq.style.backgroundColor = tile[2].color
         }

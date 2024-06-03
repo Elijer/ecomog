@@ -32,7 +32,6 @@ document.addEventListener('keydown', (event) => {
   if (socket.connected === false) return
   const keyName = event.key;
 
-  console.log(`Key released: ${keyName}`);
 
   // You can add custom logic here
   const directions = {
@@ -43,7 +42,6 @@ document.addEventListener('keydown', (event) => {
   };
 
   if (directions.hasOwnProperty(keyName)) {
-    console.log(keyName.toUpperCase());
     socket.emit("input event", { playerId: playerId(), direction: directions[keyName] });
   }
   

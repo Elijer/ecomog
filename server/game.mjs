@@ -1,6 +1,7 @@
 
 import Player from './entities/player.mjs'
 import Moss from './entities/moss.mjs'
+import Nwa from './entities/nwa.mjs'
 import { Tile, TerrainTile } from './entities/tiles.mjs'
 
 class GameInstance {
@@ -9,8 +10,10 @@ class GameInstance {
     this.cols = cols
     this.players = {}
     this.mosses = {}
+    this.nwas = {}
     this.grid = this.initializeGrid()
     this.initializeMosses()
+    this.initializeNwas()
   }
 
   initializeGrid() {
@@ -18,7 +21,12 @@ class GameInstance {
     for (let i = 0; i < this.rows; i++) {
       const row = [];
       for (let j = 0; j < this.cols; j++) {
-        row.push([null, null, new TerrainTile()]); // Create a new array for each cell
+        row.push([
+          null, // Player layer
+          null, // Moss Layer
+          new TerrainTile(), // Terrain Layer
+          null // Nwa layer
+        ]);
       }
       grid.push(row);
     }
@@ -43,12 +51,23 @@ class GameInstance {
     const [mx, my] = move[direction]
     const newX = x + mx
     const newY = y + my
-    // console.log(player.tileExists(newX, newY))
-    if (player.tileExists(newX, newY)){
+    if (player.tileExists(newX, newY) && this.grid[newX][newY][1] === null){
       player.position = [newX, newY]
       this.grid[x][y][0] = null
       this.grid[newX][newY][0] = player
       this.players[playerId].position = [newX, newY]
+    }
+  }
+
+  initializeNwas(){
+    const initialNwaCount = this.rows * this.cols * Nwa.emergence
+    for (let i = 0; i < initialNwaCount; i++){
+      const nwa = new Nwa(this.rows, this.cols, this.grid, this.nwas)
+      const [x, y] = nwa.position
+      this.nwas[nwa.id] = {
+        position: [x,y]
+      }
+      this.grid[x][y][3] = nwa
     }
   }
 
@@ -86,14 +105,25 @@ class GameInstance {
   }
 
   life(){
+    for (const [_key, value] of Object.entries(this.nwas)){
+      const [x, y] = value.position
+      const aNwa = this.grid[x][y][1]
+      if (aNwa){
+        aNwa.live()
+        if (aNwa.dead){
+          aNwa.die()
+        }
+      }
+    }
+
     for (const [_key, value] of Object.entries(this.mosses)){
       const [x, y] = value.position
       const aMoss = this.grid[x][y][1]
       if (aMoss){
         aMoss.live()
-        if (aMoss.dead){
-          aMoss.die()
-        }
+        // if (aMoss.dead){
+        //   aMoss.die()
+        // }
       }
     }
   }
