@@ -117,15 +117,14 @@ class GameInstance {
     //   }
     // }
 
-    // for (const x of [this.mosses]){
-    //   console.log(x)
-    // }
-
-    for (const [_key, value] of Object.entries(this.mosses)){
-      const [x, y] = value.position
-      const aMoss = this.grid[x][y][1]
-      if (aMoss){
-        aMoss.live()
+    // For each recorded life form, call the live method for each instance
+    for (const x of [this.mosses]){
+      for (const [_key, value] of Object.entries(x)){
+        const [x, y] = value.position
+        const instance = this.grid[x][y][1]
+        if (instance){
+          instance.live()
+        }
       }
     }
 
