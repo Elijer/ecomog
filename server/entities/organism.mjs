@@ -5,7 +5,9 @@ export default class Organism extends Item {
 
   static emergence = .0005
 
-  constructor(rows, cols, grid, instances, position, generation = 1){
+  constructor(
+    rows, cols, grid, instances, position, generation = 1
+  ){
     super(rows, cols, grid, 1)
     this.instances = instances
     this.grid = grid
@@ -31,8 +33,6 @@ export default class Organism extends Item {
     this.maturity += this.maturationInterval * this.youth
 
     // Reproduction
-    // if (this.maturity % 3 === 0 && this.youth < 0 && this.maturity < 19){ // More cyclical reproduction
-    // if (this.maturity % 3 === 0){ // very gradient, wavy trippy aging
     this.maturityOutOfOne = this.maturity / (this.maxMaturity * 2)
     if (this.maturity % this.reproductionInterval === 0 && this.insideReproductiveWindow()){ 
         this.attemptReproduction()
