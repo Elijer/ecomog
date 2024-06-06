@@ -99,7 +99,8 @@ class GameInstance {
         return channel.portableState()
       } catch (error) {
         console.log("There was an error with the following channel")
-        console.log(channel)
+        console.log(channel.channel)
+        console.log(error)
       }
     })))
   }

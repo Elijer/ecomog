@@ -2,7 +2,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import GameInstance from './game.mjs';
 
-const lifeSpeed = 800
+const lifeSpeed = 100
 
 setInterval(() => {
   console.time("life")
