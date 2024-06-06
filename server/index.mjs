@@ -46,11 +46,6 @@ io.on("connection", (socket) => {
     game.initializePlayer(playerId)
     socket.emit("initial game state", game.portableState())
 
-    // Manual Debugging tile by tile
-    // game.grid[0][0][1] = new Moss(dim, dim, game.grid, game.mosses, [0, 0], 1)
-    // game.grid[0][0][1].attemptReproduction()
-    // socket.emit("life", game.portableState())
-
     socket.on("disconnecting", async(reason) => {
       console.log("Removed a player and now here is our game state")
     })

@@ -10,10 +10,10 @@ class GameInstance {
     this.cols = cols
     this.players = {}
     this.mosses = {}
-    this.nwas = {}
+    // this.nwas = {}
     this.grid = this.initializeGrid()
     this.initializeMosses()
-    this.initializeNwas()
+    // this.initializeNwas()
   }
 
   initializeGrid() {
@@ -59,17 +59,17 @@ class GameInstance {
     }
   }
 
-  initializeNwas(){
-    const initialNwaCount = this.rows * this.cols * Nwa.emergence
-    for (let i = 0; i < initialNwaCount; i++){
-      const nwa = new Nwa(this.rows, this.cols, this.grid, this.nwas)
-      const [x, y] = nwa.position
-      this.nwas[nwa.id] = {
-        position: [x,y]
-      }
-      this.grid[x][y][3] = nwa
-    }
-  }
+  // initializeNwas(){
+  //   const initialNwaCount = this.rows * this.cols * Nwa.emergence
+  //   for (let i = 0; i < initialNwaCount; i++){
+  //     const nwa = new Nwa(this.rows, this.cols, this.grid, this.nwas)
+  //     const [x, y] = nwa.position
+  //     this.nwas[nwa.id] = {
+  //       position: [x,y]
+  //     }
+  //     this.grid[x][y][3] = nwa
+  //   }
+  // }
 
   initializeMosses(){
     // Super weird - when emergence is low, there are initial mosses, but they don't reproduce
@@ -106,27 +106,29 @@ class GameInstance {
   }
 
   life(){
-    for (const [_key, value] of Object.entries(this.nwas)){
-      const [x, y] = value.position
-      const aNwa = this.grid[x][y][1]
-      if (aNwa){
-        aNwa.live()
-        if (aNwa.dead){
-          aNwa.die()
-        }
-      }
-    }
+    // for (const [_key, value] of Object.entries(this.nwas)){
+    //   const [x, y] = value.position
+    //   const aNwa = this.grid[x][y][1]
+    //   if (aNwa){
+    //     aNwa.live()
+    //     if (aNwa.dead){
+    //       aNwa.die()
+    //     }
+    //   }
+    // }
+
+    // for (const x of [this.mosses]){
+    //   console.log(x)
+    // }
 
     for (const [_key, value] of Object.entries(this.mosses)){
       const [x, y] = value.position
       const aMoss = this.grid[x][y][1]
       if (aMoss){
         aMoss.live()
-        // if (aMoss.dead){
-        //   aMoss.die()
-        // }
       }
     }
+
   }
 }
 
