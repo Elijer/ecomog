@@ -19,6 +19,9 @@ export default class Organism extends Item {
     this.maturationInterval = 1
     this.youth = 1
     this.maxMaturity = 100
+    this.reproductionInterval = 17
+    this.reproductiveWindow = [0, 1]
+    this.maturityOutOfOne
   }
 
   live(){
@@ -30,8 +33,9 @@ export default class Organism extends Item {
     // Reproduction
     // if (this.maturity % 3 === 0 && this.youth < 0 && this.maturity < 19){ // More cyclical reproduction
     // if (this.maturity % 3 === 0){ // very gradient, wavy trippy aging
-    if (this.maturity % 17 === 0){ // very gradient, wavy trippy aging
-      this.attemptReproduction()
+    this.maturityOutOfOne = this.maturity / (this.maxMaturity * 2)
+    if (this.maturity % this.reproductionInterval === 0 && this.insideReproductiveWindow()){ 
+        this.attemptReproduction()
     }
 
     // Death
@@ -42,6 +46,10 @@ export default class Organism extends Item {
     const [x, y] = this.position
     this.grid[x][y][1] =  null
     delete this.instances[this.id]
+  }
+
+  insideReproductiveWindow(){
+    return this.maturityOutOfOne > this.reproductiveWindow[0] && this.maturityOutOfOne < this.reproductiveWindow[1]
   }
 
   attemptReproduction(){
