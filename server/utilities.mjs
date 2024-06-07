@@ -10,3 +10,7 @@ export const generateRed = () => {
 export const clamp = (value, min, max)=>  {
   return Math.max(min, Math.min(max, value));
 }
+export const roundTo = (number, decimalPlaces) => {
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.round(number * factor) / factor;
+}

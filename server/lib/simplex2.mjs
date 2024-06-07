@@ -74,9 +74,8 @@ var module = global.noise = {};
   var F3 = 1/3;
   var G3 = 1/6;
 
-  let scale = 200
 
-function simplex2(xin, yin){
+function simplex2(xin, yin, scale){
   xin = xin / scale
   yin = yin / scale
 
@@ -136,17 +135,15 @@ function simplex2(xin, yin){
   return 70 * (n0 + n1 + n2);
 };
 
-let initialRound = 100000
-
-function simplexPositive(x, y){
-  let simplex = simplex2(x, y)
+function simplexPositive(x, y, scale){
+  let simplex = simplex2(x, y, scale)
   let positive = (simplex + 1) / 2
   return positive
 }
 
-function simplex2Rounded(x, y){
+function simplex2Rounded(x, y, scale){
 
-  let simplex = simplex2(x, y)
+  let simplex = simplex2(x, y, scale)
   let rounder = Math.round(simplex * initialRound) / initialRound
   let positive = (rounder + 1) / 2
   let round = Math.round(positive * 10) / 10

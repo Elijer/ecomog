@@ -1,4 +1,5 @@
 import rgbHex from 'rgb-hex';
+import { roundTo } from '#root/utilities.mjs'
 
 export class Tile {
   constructor(){
@@ -22,14 +23,16 @@ export class TerrainTile extends Tile {
   constructor(noise){
     super()
     this.rgb = [200, 10, 10]
-    this.cargogen = noise
+    this.noise = noise
+    this.cargogen = noise * 50 // 50 being the max value of cargogen you can get
     this.type = "terrain"
     this.color = this.parseMinerals(this.cargogen)
+    // this.color = 
   }
 
   parseMinerals(cargogen){
     console.log(this.rgb)
-    return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], cargogen)
+    return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], this.noise)
   }
   
   // TODO: If I want mineral deposits, it would be more interesting to distribute them less randomly

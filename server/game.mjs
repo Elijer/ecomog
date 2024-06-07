@@ -11,6 +11,8 @@ class GameInstance {
     this.cols = cols
     this.players = {}
     this.mosses = {}
+    this.noiseScale = 30
+    this.mineralCapacity = .2
     // this.nwas = {}
     this.grid = this.initializeGrid()
     this.initializeMosses()
@@ -25,7 +27,7 @@ class GameInstance {
         row.push([
           null, // Player layer
           null, // Moss Layer
-          new TerrainTile(simplexPositive(i, j)), // Terrain Layer
+          new TerrainTile(simplexPositive(i, j, this.noiseScale) * this.mineralCapacity), // Terrain Layer
           null // Nwa layer
         ]);
       }
