@@ -12,7 +12,7 @@ class GameInstance {
     this.players = {}
     this.mosses = {}
     this.noiseScale = 30
-    this.mineralCapacity = .2
+    this.mineralCapacity = .3
     // this.nwas = {}
     this.grid = this.initializeGrid()
     this.initializeMosses()
