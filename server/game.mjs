@@ -3,6 +3,7 @@ import Player from './entities/player.mjs'
 import Moss from './entities/moss.mjs'
 import Nwa from './entities/nwa.mjs'
 import { Tile, TerrainTile } from './entities/tiles.mjs'
+import simplex2 from './lib/simplex2.mjs'
 
 class GameInstance {
   constructor(rows, cols){
@@ -24,7 +25,7 @@ class GameInstance {
         row.push([
           null, // Player layer
           null, // Moss Layer
-          new TerrainTile(), // Terrain Layer
+          new TerrainTile(simplex2(i, j)), // Terrain Layer
           null // Nwa layer
         ]);
       }

@@ -17,10 +17,11 @@ export class Tile {
 }
 
 export class TerrainTile extends Tile {
-  constructor(){
+  constructor(noise){
     super()
     this.type = "terrain"
     this.color = this.getRandomTerrainColor()
+    console.log(noise)
   }
   
   // TODO: If I want mineral deposits, it would be more interesting to distribute them less randomly

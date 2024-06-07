@@ -24,6 +24,7 @@ export default class Organism extends Item {
     this.reproductionInterval = 17
     this.reproductiveWindow = [0, 1]
     this.maturityOutOfOne
+
   }
 
   live(){
