@@ -74,7 +74,12 @@ var module = global.noise = {};
   var F3 = 1/3;
   var G3 = 1/6;
 
+  let scale = 200
+
 function simplex2(xin, yin){
+  xin = xin / scale
+  yin = yin / scale
+
   var n0, n1, n2; // Noise contributions from the three corners
   // Skew the input space to determine which simplex cell we're in
   var s = (xin+yin)*F2; // Hairy factor for 2D
@@ -133,7 +138,14 @@ function simplex2(xin, yin){
 
 let initialRound = 100000
 
+function simplexPositive(x, y){
+  let simplex = simplex2(x, y)
+  let positive = (simplex + 1) / 2
+  return positive
+}
+
 function simplex2Rounded(x, y){
+
   let simplex = simplex2(x, y)
   let rounder = Math.round(simplex * initialRound) / initialRound
   let positive = (rounder + 1) / 2
@@ -141,4 +153,4 @@ function simplex2Rounded(x, y){
   return round
 }
 
-export { simplex2Rounded }
+export { simplex2, simplex2Rounded, simplexPositive }

@@ -3,7 +3,7 @@ import Player from './entities/player.mjs'
 import Moss from './entities/moss.mjs'
 import Nwa from './entities/nwa.mjs'
 import { Tile, TerrainTile } from './entities/tiles.mjs'
-import { simplex2Rounded } from './lib/simplex2.mjs'
+import { simplex2Rounded, simplex2, simplexPositive } from './lib/simplex2.mjs'
 
 class GameInstance {
   constructor(rows, cols){
@@ -25,7 +25,7 @@ class GameInstance {
         row.push([
           null, // Player layer
           null, // Moss Layer
-          new TerrainTile(simplex2Rounded(i, j)), // Terrain Layer
+          new TerrainTile(simplexPositive(i, j)), // Terrain Layer
           null // Nwa layer
         ]);
       }

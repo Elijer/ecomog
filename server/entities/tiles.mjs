@@ -1,3 +1,5 @@
+import rgbHex from 'rgb-hex';
+
 export class Tile {
   constructor(){
     this.type = "tile"
@@ -19,9 +21,15 @@ export class Tile {
 export class TerrainTile extends Tile {
   constructor(noise){
     super()
+    this.rgb = [200, 10, 10]
+    this.cargogen = noise
     this.type = "terrain"
-    this.color = this.getRandomTerrainColor()
-    console.log(noise)
+    this.color = this.parseMinerals(this.cargogen)
+  }
+
+  parseMinerals(cargogen){
+    console.log(this.rgb)
+    return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], cargogen)
   }
   
   // TODO: If I want mineral deposits, it would be more interesting to distribute them less randomly
