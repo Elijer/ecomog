@@ -131,5 +131,14 @@ function simplex2(xin, yin){
   return 70 * (n0 + n1 + n2);
 };
 
+let initialRound = 100000
 
-export default simplex2
+function simplex2Rounded(x, y){
+  let simplex = simplex2(x, y)
+  let rounder = Math.round(simplex * initialRound) / initialRound
+  let positive = (rounder + 1) / 2
+  let round = Math.round(positive * 10) / 10
+  return round
+}
+
+export { simplex2Rounded }
