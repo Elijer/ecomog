@@ -6,7 +6,7 @@ export default class Organism extends Item {
   static emergence = .0005
 
   constructor(
-    rows, cols, grid, instances, position, generation = 1
+    rows, cols, grid, instances, position, generation = 1, startingEnergy = 0
   ){
     super(rows, cols, grid, 1)
     this.instances = instances
@@ -25,6 +25,14 @@ export default class Organism extends Item {
     this.reproductiveWindow = [0, 1]
     this.maturityOutOfOne
 
+    this.photosynthete = false
+    this.storedEnergy = startingEnergy
+    this.land = grid[this.position[0]][this.position[1]][2]
+
+  }
+
+  photosynthesis(){
+    // console.log(this.land)
   }
 
   live(){
@@ -41,6 +49,9 @@ export default class Organism extends Item {
 
     // Death
     if (this.maturity < 0) this.die()
+
+    // Photosynthesis
+    if (this.photosynthete) this.photosynthesis()
   }
 
   die(){

@@ -12,7 +12,7 @@ class GameInstance {
     this.players = {}
     this.mosses = {}
     this.noiseScale = 30
-    this.mineralCapacity = .3
+    this.mineralCapacity = 1
     // this.nwas = {}
     this.grid = this.initializeGrid()
     this.initializeMosses()
@@ -24,10 +24,12 @@ class GameInstance {
     for (let i = 0; i < this.rows; i++) {
       const row = [];
       for (let j = 0; j < this.cols; j++) {
+        let result = simplexPositive(i, j, this.noiseScale) * this.mineralCapacity
+        console.log(result)
         row.push([
           null, // Player layer
           null, // Moss Layer
-          new TerrainTile(simplexPositive(i, j, this.noiseScale) * this.mineralCapacity), // Terrain Layer
+          new TerrainTile(result), // Terrain Layer
           null // Nwa layer
         ]);
       }
@@ -78,7 +80,7 @@ class GameInstance {
     // Super weird - when emergence is low, there are initial mosses, but they don't reproduce
     const initialMossCount = this.rows * this.cols * Moss.emergence
     for (let i = 0; i < initialMossCount; i++){
-      const moss = new Moss(this.rows, this.cols, this.grid, this.mosses)
+      const moss = new Moss(this.rows, this.cols, this.grid, this.mosses, 200)
       const [x, y] = moss.position
       this.mosses[moss.id] = {
         position: [x,y]

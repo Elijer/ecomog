@@ -22,16 +22,15 @@ export class Tile {
 export class TerrainTile extends Tile {
   constructor(noise){
     super()
-    this.rgb = [200, 10, 10]
+    this.rgb = [14, 5, 18]
     this.noise = noise
     this.cargogen = noise * 50 // 50 being the max value of cargogen you can get
     this.type = "terrain"
-    this.color = this.parseMinerals(this.cargogen)
+    this.color = this.parseMinerals()
     // this.color = 
   }
 
   parseMinerals(cargogen){
-    console.log(this.rgb)
     return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], this.noise)
   }
   

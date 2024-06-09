@@ -16,6 +16,7 @@ export default class Moss extends Organism {
       super(rows, cols, grid, instances, position, generation)
       this.rgb = [60, 180, 120]
       this.type = "moss"
+      this.photosynthete = true
     
     }
 
