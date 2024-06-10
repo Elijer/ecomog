@@ -1,24 +1,25 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import GameInstance from './game.mjs';
-import { RULES } from './saskanupe_constants.mjs';
+import { RULES, CHANNELS } from './saskanupe_constants.mjs';
 
-const lifeSpeed = RULES.world.lifeSpeed
+let frame = 0
 
 setInterval(() => {
   io.emit("life", game.portableState())
-  game.life()
+  game.life(frame)
 
   let somePlayers = []
   for (let i = 0; i < game.rows; i++){
     for (let j = 0; j < game.cols; j++){
 
-      if (game.grid[i][j][0]){
+      if (game.grid[i][j][CHANNELS.player]){
         somePlayers.push(game.grid[i][j][0].id)
       }
     }
   }
-}, lifeSpeed)
+  frame++
+}, RULES.world.lifeSpeed)
 
 const httpServer = createServer();
 const io = new Server(httpServer, {

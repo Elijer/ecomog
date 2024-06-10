@@ -20,6 +20,7 @@ export default class Organism extends Item {
     // Life Cycle
     this.maturity = 0
     this.maturationInterval = 1
+    this.lifeCadence = 5 // how many life calls for every frame of lifeSpeed
 
     this.reproductionInterval = 17
     this.reproductiveWindow = [0, 1]
@@ -42,7 +43,10 @@ export default class Organism extends Item {
     }
   }
 
-  live(){
+  live(frame){
+    if (frame % this.lifeCadence !== 0){
+      return
+    }
 
     // Aging
     this.storedEnergy -= 1

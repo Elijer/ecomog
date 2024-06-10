@@ -94,15 +94,16 @@ class GameInstance {
     })))
   }
 
-  life(){
+  life(frame){
 
     // For each recorded life form, call the live method for each instance
     for (const x of [this.mosses]){
       for (const [_key, value] of Object.entries(x)){
         const [x, y] = value.position
+        // ONCE I ADD MORE OF THESE, I'LL HAVE TO MAP TO THE CHANNELS
         const instance = this.grid[x][y][CHANNELS.moss]
         if (instance){
-          instance.live()
+          instance.live(frame)
         }
       }
     }
