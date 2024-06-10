@@ -10,26 +10,31 @@ export default class Moss extends Organism {
     grid,
     instances,
     position,
-    generation = 1
+    startingEnergy,
+    generation = 1,
     ){
 
-      super(rows, cols, grid, instances, position, generation)
+      super(rows, cols, grid, instances, position, startingEnergy, generation)
       this.rgb = [60, 180, 120]
       this.type = "moss"
       this.photosynthete = true
     
     }
 
+    getPyramidMaturity = () => {
+      return 2 * (.5 - Math.abs(this.maturityOutOfOne - .5))
+    }
+
     reflect() {
-      const computedMaturity = this.maturity / this.maxMaturity
-      return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], clamp(computedMaturity, 0, 1))
+      return '#' + rgbHex(this.rgb[0], this.rgb[1], this.rgb[2], this.getPyramidMaturity() )
     }
 
     portableState(){
       return {
         type: this.type,
         color: this.reflect(),
-        maturity: this.maturity
+        energy: this.storedEnergy,
+        legacyEnergy: this.legacyEnergy
       }
     }
 }

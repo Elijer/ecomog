@@ -9,6 +9,7 @@ export default class God {
 
   createWorld(){
 
+
     let box = document.getElementById('box')
     box.innerHTML = ''
     for (let y = 0; y < this.game.rows - 1; y++) {
@@ -45,7 +46,8 @@ export default class God {
     const popup = document.getElementById('popup');
     const popupX = document.getElementById('popup-x');
     const popupY = document.getElementById('popup-y');
-    const popupMaturity = document.getElementById('popup-maturity');
+    const popupEnergy = document.getElementById('popup-energy');
+    const popupLegacyEnergy = document.getElementById('popup-legacy-energy');
     
     if (this.selectedCell){
       if (this.selectedCell){
@@ -54,7 +56,8 @@ export default class God {
           popup.style.display = "block"
           popupX.innerHTML = `x: ${x}`
           popupY.innerHTML = `y: ${y}`
-          popupMaturity.innerHTML = `maturity: ${grid[x][y][1].maturity}`
+          popupEnergy.innerHTML = `energy: ${grid[x][y][1].energy}`
+          popupLegacyEnergy.innerHTML = `legacyEnergy: ${grid[x][y][1].legacyEnergy}`
         } else {
           popup.style.display = "none"
         }

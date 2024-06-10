@@ -25,7 +25,6 @@ class GameInstance {
       const row = [];
       for (let j = 0; j < this.cols; j++) {
         let result = simplexPositive(i, j, this.noiseScale) * this.mineralCapacity
-        console.log(result)
         row.push([
           null, // Player layer
           null, // Moss Layer
@@ -80,7 +79,7 @@ class GameInstance {
     // Super weird - when emergence is low, there are initial mosses, but they don't reproduce
     const initialMossCount = this.rows * this.cols * Moss.emergence
     for (let i = 0; i < initialMossCount; i++){
-      const moss = new Moss(this.rows, this.cols, this.grid, this.mosses, 200)
+      const moss = new Moss(this.rows, this.cols, this.grid, this.mosses, null, 200)
       const [x, y] = moss.position
       this.mosses[moss.id] = {
         position: [x,y]
@@ -111,16 +110,6 @@ class GameInstance {
   }
 
   life(){
-    // for (const [_key, value] of Object.entries(this.nwas)){
-    //   const [x, y] = value.position
-    //   const aNwa = this.grid[x][y][1]
-    //   if (aNwa){
-    //     aNwa.live()
-    //     if (aNwa.dead){
-    //       aNwa.die()
-    //     }
-    //   }
-    // }
 
     // For each recorded life form, call the live method for each instance
     for (const x of [this.mosses]){

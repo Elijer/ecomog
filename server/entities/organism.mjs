@@ -1,12 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Item } from './tiles.mjs'
 
+const RULES = {
+  Cg_pA_rate: 17
+}
+
 export default class Organism extends Item {
 
   static emergence = .0005
 
   constructor(
-    rows, cols, grid, instances, position, generation = 1, startingEnergy = 0
+    rows, cols, grid, instances, position, startingEnergy, generation = 1
   ){
     super(rows, cols, grid, 1)
     this.instances = instances
@@ -19,31 +23,40 @@ export default class Organism extends Item {
     // Life Cycle
     this.maturity = 0
     this.maturationInterval = 1
-    this.youth = 1
-    this.maxMaturity = 100
+    // this.youth = 1 // shouldn't need this either
+    // this.maxMaturity = 100 // I don't think we need this anymore
     this.reproductionInterval = 17
     this.reproductiveWindow = [0, 1]
-    this.maturityOutOfOne
+    this.maturityOutOfOne = 0
 
     this.photosynthete = false
+    this.lifeSpan = startingEnergy
     this.storedEnergy = startingEnergy
+    this.legacyEnergy = 0
+    this.reproductonEnergyTransfer= 200
+
     this.land = grid[this.position[0]][this.position[1]][2]
 
   }
 
   photosynthesis(){
-    // console.log(this.land)
+    if (this.land.cargogen >= 0){
+      this.land.cargogen -= 1
+      this.legacyEnergy += RULES.Cg_pA_rate
+    }
   }
 
   live(){
 
     // Aging
-    if (this.maturity > this.maxMaturity) this.youth = -2
-    this.maturity += this.maturationInterval * this.youth
+    // if (this.maturity > this.maxMaturity) this.youth = -2
+    this.storedEnergy -= 1
+    if (this.storedEnergy <= 0) this.die()
+    // this.maturity += this.maturationInterval * this.youth
 
     // Reproduction
-    this.maturityOutOfOne = this.maturity / (this.maxMaturity * 2)
-    if (this.maturity % this.reproductionInterval === 0 && this.insideReproductiveWindow()){ 
+    this.maturityOutOfOne = this.storedEnergy / (this.lifeSpan)
+    if (this.storedEnergy % this.reproductionInterval === 0 && this.insideReproductiveWindow()){ 
         this.attemptReproduction()
     }
 
@@ -57,6 +70,9 @@ export default class Organism extends Item {
   die(){
     const [x, y] = this.position
     this.grid[x][y][1] =  null
+
+    // Redistribute the energy of the dead organism to the land
+    this.land.cargogen += this.startingEnergy / RULES.Cg_pA_rate
     delete this.instances[this.id]
   }
 
@@ -67,13 +83,20 @@ export default class Organism extends Item {
   attemptReproduction(){
     const viableMove = this.viableMove()
     if (viableMove){
-      // Time to get busy
-      const newMoss = new this.constructor(this.rows, this.cols, this.grid, this.instances, viableMove, this.generation + 1)
-      const [x, y] = newMoss.position
-      this.instances[newMoss.id] = {
-        position: [x, y]
+
+      // Check that the parent can afford to have a child
+      // Subtract that cost from the parent's legacyEnergy
+      if (this.legacyEnergy >= this.reproductonEnergyTransfer){
+        const newMoss = new this.constructor(this.rows, this.cols, this.grid, this.instances, viableMove, this.legacyEnergy, this.generation + 1)
+        this.legacyEnergy -= this.reproductonEnergyTransfer
+
+        const [x, y] = newMoss.position
+        this.instances[newMoss.id] = {
+          position: [x, y]
+        }
+        this.grid[x][y][1] = newMoss
+        
       }
-      this.grid[x][y][1] = newMoss
     }
   }
 
@@ -81,7 +104,8 @@ export default class Organism extends Item {
     return {
       type: this.type,
       color: this.color,
-      maturity: this.maturity
+      energy: this.storedEnergy,
+      legacyEnergy: this.legacyEnergy
     }
   }
 
