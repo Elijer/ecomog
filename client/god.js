@@ -7,6 +7,7 @@ export default class God {
 
     // Debugging
     this.selectedCell = null
+    this.selectedOrganism = null
   }
 
   createWorld(){
@@ -31,10 +32,15 @@ export default class God {
 
     // Listen for mouse events
     box.addEventListener("click", (event) => {
-      console.log(event)
       if (!event.target || !event.target.dataset) return
       let el = event.target
       let elData = el.dataset
+      console.log(el.dataset)
+
+      if (elData.nwa){
+        this.selectedOrganism = elData.nwa
+      }
+
       if (elData.x && elData.y){
         this.selectedCell = [elData.x, elData.y]
       } else {
@@ -42,6 +48,15 @@ export default class God {
       }
     })
 
+  }
+
+  printOrganismData = (grid) => {
+    if (this.selectedOrganism){
+      // TODO: Okay so I have the location, which I already had, but I need to expose whatever information about that organism
+      if (this.game.nwas[this.selectedOrganism]){
+        console.log(this.game.nwas[this.selectedOrganism])
+      }
+    }
   }
 
   printCellData = (grid) => {
@@ -75,6 +90,9 @@ export default class God {
         let sq = document.getElementById(`$sq-${x}-${y}`)
         sq.setAttribute("data-x", x)
         sq.setAttribute("data-y", y)
+        if (game.grid[x][y][CHANNELS.nwa] && game.grid[x][y][CHANNELS.nwa].id){
+          sq.setAttribute("data-nwa", game.grid[x][y][CHANNELS.nwa].id)
+        }
         let tile = game.grid[x][y]
 
         if (this.selectedCell){

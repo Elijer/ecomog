@@ -97,7 +97,8 @@ class GameInstance {
     return {
       rows: this.rows,
       cols: this.cols,
-      grid: this.convertGridToPortableState()
+      grid: this.convertGridToPortableState(),
+      nwas: this.nwas,
     }
   }
 

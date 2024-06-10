@@ -21,4 +21,11 @@ export default class Moss extends Organism {
       this.color = "brown"
       this.mobile = true
     }
+    
+    portableState(){
+      return {
+        ...super.portableState(),
+        id : this.id
+      }
+    }
 }
