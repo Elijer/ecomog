@@ -57,9 +57,9 @@ export default class God {
         popup.style.display = "block"
         popupX.innerHTML = `x: ${x}`
         popupY.innerHTML = `y: ${y}`
-        popupEnergy.innerHTML = `energy: ${grid[x][y][1].energy}`
-        popupLegacyEnergy.innerHTML = `legacyEnergy: ${grid[x][y][1].legacyEnergy}`
-        cargogen.innerHTML = `landCargogen: ${grid[x][y][2].cargogen}`
+        popupEnergy.innerHTML = `lifeForce: ${grid[x][y][1].energy}e`
+        popupLegacyEnergy.innerHTML = `inherited: ${grid[x][y][1].legacyEnergy}e`
+        cargogen.innerHTML = `${grid[x][y][2].cargogen}Cg`
       } else {
         popup.style.display = "none"
       }

@@ -1,4 +1,5 @@
 import rgbHex from 'rgb-hex';
+import { roundTo } from '#root/utilities.mjs';
 import RULES from '#root/saskanupe_constants.mjs'
 
 export class Tile {
@@ -44,7 +45,7 @@ export class TerrainTile extends Tile {
   portableState(){
     return {
       ...super.portableState(),
-      cargogen: this.cargogen
+      cargogen: roundTo(this.cargogen, 0)
     }
   }
 }

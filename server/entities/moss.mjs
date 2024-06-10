@@ -30,10 +30,8 @@ export default class Moss extends Organism {
 
     portableState(){
       return {
-        type: this.type,
+        ...super.portableState(),
         color: this.reflect(),
-        energy: this.storedEnergy,
-        legacyEnergy: this.legacyEnergy
       }
     }
 }

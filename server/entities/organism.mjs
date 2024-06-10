@@ -99,8 +99,7 @@ export default class Organism extends Item {
 
   portableState(){
     return {
-      type: this.type,
-      color: this.color,
+      ...super.portableState(),
       energy: this.storedEnergy,
       legacyEnergy: this.legacyEnergy
     }
