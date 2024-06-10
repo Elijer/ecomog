@@ -1,8 +1,9 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import GameInstance from './game.mjs';
+import RULES from './saskanupe_constants.mjs';
 
-const lifeSpeed = 100
+const lifeSpeed = RULES.world.lifeSpeed
 
 // Perlin noise functions in search of a home:
 function randomUnitVector(){

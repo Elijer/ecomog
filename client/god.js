@@ -74,6 +74,15 @@ export default class God {
         sq.setAttribute("data-x", x)
         sq.setAttribute("data-y", y)
         let tile = game.grid[x][y]
+
+        if (this.selectedCell){
+          if (parseInt(this.selectedCell[0]) === parseInt(x) && parseInt(this.selectedCell[1]) == parseInt(y)){
+            sq.style.border = ".1px solid white"
+          } else {
+            sq.style.border = ".1px solid rgba(255, 255, 255, .1)"
+          }
+        }
+
         if (tile[0]){
            sq.style.backgroundColor = tile[0].color
         } else if (tile[1]) {
