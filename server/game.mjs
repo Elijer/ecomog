@@ -18,15 +18,15 @@ class GameInstance {
     this.grid = this.initializeGrid()
 
     this.lifeMap = {
-      mosses: {
-        list: this.mosses,
-        channel: CHANNELS.moss,
-        obj: Moss
-      },
       nwas: {
         list: this.nwas,
         channel: CHANNELS.nwa,
         obj: Nwa
+      },
+      mosses: {
+        list: this.mosses,
+        channel: CHANNELS.moss,
+        obj: Moss
       }
     }
 

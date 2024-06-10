@@ -82,10 +82,19 @@ export default class Organism extends Item {
     const [mx, my] = randomMove
     const newX = x + mx
     const newY = y + my
+    this.storedEnergy -= RULES.movementCost
     if (this.tileExists(newX, newY) && this.grid[newX][newY][this.channel] === null){
+
+      // Eat the thing
+      if (this.grid[newX][newY][CHANNELS.moss] !== null){
+        this.legacyEnergy += this.grid[newX][newY][CHANNELS.moss].storedEnergy + this.grid[newX][newY][CHANNELS.moss].legacyEnergy
+        this.grid[newX][newY][CHANNELS.moss].die()
+      }
+
       this.grid[x][y][this.channel] = null
       this.grid[newX][newY][this.channel] = instance
       this.instances[this.id].position = [newX, newY]
+
     }
   }
 

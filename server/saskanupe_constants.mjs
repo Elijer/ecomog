@@ -1,6 +1,7 @@
 const RULES = {
   Cg_pA_rate: 20, // how much e can be generated per Cg per sq per moment
   noiseCargogenRatio: 200, // how much Cg is seeded per max noise value
+  movementCost: 2,
   world: {
     lifeSpeed: 100
   }
