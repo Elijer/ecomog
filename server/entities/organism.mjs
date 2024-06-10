@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Item } from './tiles.mjs'
-import RULES from '#root/saskanupe_constants.mjs'
+import { RULES } from '#root/saskanupe_constants.mjs'
 
 export default class Organism extends Item {
 

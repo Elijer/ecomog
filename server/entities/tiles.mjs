@@ -1,6 +1,6 @@
 import rgbHex from 'rgb-hex';
 import { roundTo } from '#root/utilities.mjs';
-import RULES from '#root/saskanupe_constants.mjs'
+import { RULES } from '#root/saskanupe_constants.mjs'
 
 export class Tile {
   constructor(){

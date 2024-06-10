@@ -1,7 +1,7 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import GameInstance from './game.mjs';
-import RULES from './saskanupe_constants.mjs';
+import { RULES } from './saskanupe_constants.mjs';
 
 const lifeSpeed = RULES.world.lifeSpeed
 
