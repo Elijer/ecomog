@@ -1,7 +1,6 @@
 
 import Player from './entities/player.mjs'
 import Moss from './entities/moss.mjs'
-import Nwa from './entities/nwa.mjs'
 import { Tile, TerrainTile } from './entities/tiles.mjs'
 import { simplex2Rounded, simplex2, simplexPositive } from './lib/simplex2.mjs'
 import { CHANNELS } from './saskanupe_constants.mjs'
