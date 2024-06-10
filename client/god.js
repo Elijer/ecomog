@@ -28,9 +28,10 @@ export default class God {
     }
 
     // Listen for mouse events
-    box.addEventListener("mouseover", (event) => {
-      if (!event.fromElement || !event.fromElement.dataset) return
-      let el = event.fromElement
+    box.addEventListener("click", (event) => {
+      console.log(event)
+      if (!event.target || !event.target.dataset) return
+      let el = event.target
       let elData = el.dataset
       if (elData.x && elData.y){
         this.selectedCell = [elData.x, elData.y]
@@ -50,17 +51,15 @@ export default class God {
     const popupLegacyEnergy = document.getElementById('popup-legacy-energy');
     
     if (this.selectedCell){
-      if (this.selectedCell){
-        const [x, y] = this.selectedCell
-        if (grid[x][y] && grid[x][y][1]) {
-          popup.style.display = "block"
-          popupX.innerHTML = `x: ${x}`
-          popupY.innerHTML = `y: ${y}`
-          popupEnergy.innerHTML = `energy: ${grid[x][y][1].energy}`
-          popupLegacyEnergy.innerHTML = `legacyEnergy: ${grid[x][y][1].legacyEnergy}`
-        } else {
-          popup.style.display = "none"
-        }
+      const [x, y] = this.selectedCell
+      if (grid[x][y] && grid[x][y][1]) {
+        popup.style.display = "block"
+        popupX.innerHTML = `x: ${x}`
+        popupY.innerHTML = `y: ${y}`
+        popupEnergy.innerHTML = `energy: ${grid[x][y][1].energy}`
+        popupLegacyEnergy.innerHTML = `legacyEnergy: ${grid[x][y][1].legacyEnergy}`
+      } else {
+        popup.style.display = "none"
       }
     }
   }

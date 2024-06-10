@@ -39,18 +39,23 @@ export default class Organism extends Item {
 
   }
 
-  photosynthesis(){
-    if (this.land.cargogen >= 0){
-      this.land.cargogen -= 1
-      this.legacyEnergy += RULES.Cg_pA_rate
-    }
-  }
+  // photosynthesis(){
+  //   if (this.land.cargogen >= 0){
+  //     this.land.cargogen -= 1
+  //     this.legacyEnergy += RULES.Cg_pA_rate
+  //   }
+  // }
 
   live(){
 
     // Aging
-    // if (this.maturity > this.maxMaturity) this.youth = -2
     this.storedEnergy -= 1
+    
+    if (this.land.cargogen >= 0){
+      this.land.cargogen -= 1
+      this.legacyEnergy += RULES.Cg_pA_rate
+    }
+    
     if (this.storedEnergy <= 0) this.die()
     // this.maturity += this.maturationInterval * this.youth
 
@@ -64,7 +69,7 @@ export default class Organism extends Item {
     if (this.maturity < 0) this.die()
 
     // Photosynthesis
-    if (this.photosynthete) this.photosynthesis()
+    // if (this.photosynthete) this.photosynthesis()
   }
 
   die(){
@@ -72,7 +77,7 @@ export default class Organism extends Item {
     this.grid[x][y][1] =  null
 
     // Redistribute the energy of the dead organism to the land
-    this.land.cargogen += this.startingEnergy / RULES.Cg_pA_rate
+    this.land.cargogen += (this.startingEnergy +this.legacyEnergy )/ RULES.Cg_pA_rate
     delete this.instances[this.id]
   }
 
