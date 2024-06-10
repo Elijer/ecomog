@@ -1,15 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Item } from './tiles.mjs'
-import { RULES } from '#root/saskanupe_constants.mjs'
+import { RULES, CHANNELS } from '#root/saskanupe_constants.mjs'
 
 export default class Organism extends Item {
 
   static emergence = .0005
 
   constructor(
-    rows, cols, grid, instances, position, startingEnergy, generation = 1
+    rows, cols, grid, instances, position, channel, startingEnergy, generation = 1
   ){
-    super(rows, cols, grid, 1)
+    super(rows, cols, grid, channel)
     this.instances = instances
     this.grid = grid
     this.position = position && position.length ? position : this.findEmptyPoint()
@@ -31,7 +31,7 @@ export default class Organism extends Item {
     this.legacyEnergy = 0
     this.reproductionEnergyTransfer= 200
 
-    this.land = grid[this.position[0]][this.position[1]][2]
+    this.land = grid[this.position[0]][this.position[1]][CHANNELS.terrain]
 
   }
 
@@ -64,7 +64,7 @@ export default class Organism extends Item {
 
   die(){
     const [x, y] = this.position
-    this.grid[x][y][1] =  null
+    this.grid[x][y][this.channel] =  null
 
     // Redistribute the energy of the dead organism to the land
     this.land.cargogen += (this.lifeSpan + this.legacyEnergy ) / RULES.Cg_pA_rate
@@ -90,7 +90,7 @@ export default class Organism extends Item {
         this.instances[newMoss.id] = {
           position: [x, y]
         }
-        this.grid[x][y][1] = newMoss
+        this.grid[x][y][this.channel] = newMoss
         
       }
     }
@@ -121,8 +121,8 @@ export default class Organism extends Item {
       const newX = this.position[0] + dx;
       const newY = this.position[1] + dy;
       if (this.tileExists(newX, newY)){
-        let occupant = this.grid[newX][newY][1]
-        if (!occupant )viableMoves.push([newX, newY, "empty"])
+        let occupant = this.grid[newX][newY][this.channel]
+        if (!occupant) viableMoves.push([newX, newY, "empty"])
       }
     }
     return viableMoves

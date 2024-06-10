@@ -1,3 +1,5 @@
+import { CHANNELS } from "./constants"
+
 export default class God {
   constructor(game, mapConfig){
     this.game = game
@@ -53,12 +55,12 @@ export default class God {
     
     if (this.selectedCell){
       const [x, y] = this.selectedCell
-      if (grid[x][y] && grid[x][y][1]) {
+      if (grid[x][y] && grid[x][y][CHANNELS.moss]) {
         popup.style.display = "block"
         popupX.innerHTML = `x: ${x}`
         popupY.innerHTML = `y: ${y}`
-        popupEnergy.innerHTML = `lifeForce: ${grid[x][y][1].energy}e`
-        popupLegacyEnergy.innerHTML = `inherited: ${grid[x][y][1].legacyEnergy}e`
+        popupEnergy.innerHTML = `lifeForce: ${grid[x][y][CHANNELS.moss].energy}e`
+        popupLegacyEnergy.innerHTML = `inherited: ${grid[x][y][CHANNELS.moss].legacyEnergy}e`
         cargogen.innerHTML = `${grid[x][y][2].cargogen}Cg`
       } else {
         popup.style.display = "none"
@@ -83,14 +85,14 @@ export default class God {
           }
         }
 
-        if (tile[0]){
-           sq.style.backgroundColor = tile[0].color
-        } else if (tile[1]) {
-          sq.style.backgroundColor = tile[1].color
-        } else if (tile[3]){
-          sq.style.backgroundColor = tile[3].color
+        if (tile[CHANNELS.player]){
+           sq.style.backgroundColor = tile[CHANNELS.player].color
+        } else if (tile[CHANNELS.moss]) {
+          sq.style.backgroundColor = tile[CHANNELS.moss].color
+        } else if (tile[CHANNELS.nwa]){
+          sq.style.backgroundColor = tile[CHANNELS.nwa].color
         } else {
-          sq.style.backgroundColor = tile[2].color
+          sq.style.backgroundColor = tile[CHANNELS.terrain].color
         }
       }
     }

@@ -1,5 +1,6 @@
 import Organism from './organism.mjs'
 import rgbHex from 'rgb-hex';
+import { CHANNELS } from '#root/saskanupe_constants.mjs';
 
 
 export default class Moss extends Organism {
@@ -13,7 +14,7 @@ export default class Moss extends Organism {
     generation = 1,
     ){
 
-      super(rows, cols, grid, instances, position, startingEnergy, generation)
+      super(rows, cols, grid, instances, position, CHANNELS.moss, startingEnergy, generation)
       this.rgb = [60, 180, 120]
       this.type = "moss"
       this.photosynthete = true

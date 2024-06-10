@@ -1,9 +1,10 @@
 import { generateRandomColor} from '#root/utilities.mjs'
 import { Item }  from './tiles.mjs'
+import { CHANNELS } from '#root/saskanupe_constants.mjs'
 
 export default class Player extends Item {
   constructor(id, players, grid, cols, rows){
-    super(rows, cols, grid, 0)
+    super(rows, cols, grid, CHANNELS.player)
     this.type = "player"
     this.players = players
     this.id = id
@@ -27,7 +28,7 @@ export default class Player extends Item {
       position: [x, y]
     }
 
-    this.grid[x][y][0] = this
+    this.grid[x][y][CHANNELS.player] = this
 
   }
 

@@ -14,10 +14,8 @@ class GameInstance {
     this.mosses = {}
     this.noiseScale = 30
     this.mineralCapacity = 1
-    // this.nwas = {}
     this.grid = this.initializeGrid()
     this.initializeMosses()
-    // this.initializeNwas()
   }
 
   initializeGrid() {
@@ -50,34 +48,21 @@ class GameInstance {
       up: [-1, 0],
       down: [1, 0]
     }
-    // const player = this.players[playerId]
+
     const [x, y] = this.players[playerId].position
-    const player = this.grid[x][y][0]
+    const player = this.grid[x][y][CHANNELS.player]
     const [mx, my] = move[direction]
     const newX = x + mx
     const newY = y + my
-    if (player.tileExists(newX, newY) && this.grid[newX][newY][1] === null){
+    if (player.tileExists(newX, newY) && this.grid[newX][newY][CHANNELS.moss] === null){
       player.position = [newX, newY]
-      this.grid[x][y][0] = null
-      this.grid[newX][newY][0] = player
+      this.grid[x][y][CHANNELS.player] = null
+      this.grid[newX][newY][CHANNELS.player] = player
       this.players[playerId].position = [newX, newY]
     }
   }
 
-  // initializeNwas(){
-  //   const initialNwaCount = this.rows * this.cols * Nwa.emergence
-  //   for (let i = 0; i < initialNwaCount; i++){
-  //     const nwa = new Nwa(this.rows, this.cols, this.grid, this.nwas)
-  //     const [x, y] = nwa.position
-  //     this.nwas[nwa.id] = {
-  //       position: [x,y]
-  //     }
-  //     this.grid[x][y][3] = nwa
-  //   }
-  // }
-
   initializeMosses(){
-    // Super weird - when emergence is low, there are initial mosses, but they don't reproduce
     const initialMossCount = this.rows * this.cols * Moss.emergence
     for (let i = 0; i < initialMossCount; i++){
       const moss = new Moss(this.rows, this.cols, this.grid, this.mosses, null, 200)
@@ -85,7 +70,7 @@ class GameInstance {
       this.mosses[moss.id] = {
         position: [x,y]
       }
-      this.grid[x][y][1] = moss
+      this.grid[x][y][CHANNELS.moss] = moss
     }
   }
 
@@ -116,7 +101,7 @@ class GameInstance {
     for (const x of [this.mosses]){
       for (const [_key, value] of Object.entries(x)){
         const [x, y] = value.position
-        const instance = this.grid[x][y][1]
+        const instance = this.grid[x][y][CHANNELS.moss]
         if (instance){
           instance.live()
         }
