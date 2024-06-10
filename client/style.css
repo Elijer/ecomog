@@ -1,5 +1,5 @@
 body {
-  font-family: sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   color: rgb(51, 46, 46);
   margin: auto;
   background: black;
@@ -43,4 +43,9 @@ div.row {
 
 #popup {
   color: white;
+  margin-top: 40px;
+}
+
+#popup p {
+  margin: 0px;
 }
