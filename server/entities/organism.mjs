@@ -70,7 +70,23 @@ export default class Organism extends Item {
   }
 
   move(){
-    console.log("movement")
+    const moves = [
+      [0, -1],
+      [0, 1],
+      [-1, 0],
+      [1, 0]
+    ]
+    const randomMove = moves[Math.floor(Math.random() * 4)]
+    const [x, y] = this.instances[this.id].position
+    const instance = this.grid[x][y][this.channel]
+    const [mx, my] = randomMove
+    const newX = x + mx
+    const newY = y + my
+    if (this.tileExists(newX, newY) && this.grid[newX][newY][this.channel] === null){
+      this.grid[x][y][this.channel] = null
+      this.grid[newX][newY][this.channel] = instance
+      this.instances[this.id].position = [newX, newY]
+    }
   }
 
   die(){
