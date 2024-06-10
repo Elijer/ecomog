@@ -5,12 +5,6 @@ import RULES from './saskanupe_constants.mjs';
 
 const lifeSpeed = RULES.world.lifeSpeed
 
-// Perlin noise functions in search of a home:
-function randomUnitVector(){
-  let theta = Math.random() * 2 * Math.PI;
-  return {x: Math.cos(theta), y: Math.sin(theta)};
-}
-
 setInterval(() => {
   io.emit("life", game.portableState())
   game.life()
@@ -18,9 +12,6 @@ setInterval(() => {
   let somePlayers = []
   for (let i = 0; i < game.rows; i++){
     for (let j = 0; j < game.cols; j++){
-
-      game.grid[i][j][2].ruv = randomUnitVector()
-      // make some perlin noise generated minerals here      
 
       if (game.grid[i][j][0]){
         somePlayers.push(game.grid[i][j][0].id)
