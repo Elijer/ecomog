@@ -67,7 +67,6 @@ export default class Organism extends Item {
     this.grid[x][y][1] =  null
 
     // Redistribute the energy of the dead organism to the land
-    console.log(this.lifeSpan, this.legacyEnergy, RULES.Cg_pA_rate, this.land.cargogen)
     this.land.cargogen += (this.lifeSpan + this.legacyEnergy ) / RULES.Cg_pA_rate
     delete this.instances[this.id]
   }
