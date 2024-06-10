@@ -1,9 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Item } from './tiles.mjs'
-
-const RULES = {
-  Cg_pA_rate: 17
-}
+import RULES from '#root/saskanupe_constants.mjs'
 
 export default class Organism extends Item {
 
@@ -23,8 +20,7 @@ export default class Organism extends Item {
     // Life Cycle
     this.maturity = 0
     this.maturationInterval = 1
-    // this.youth = 1 // shouldn't need this either
-    // this.maxMaturity = 100 // I don't think we need this anymore
+
     this.reproductionInterval = 17
     this.reproductiveWindow = [0, 1]
     this.maturityOutOfOne = 0
@@ -33,31 +29,28 @@ export default class Organism extends Item {
     this.lifeSpan = startingEnergy
     this.storedEnergy = startingEnergy
     this.legacyEnergy = 0
-    this.reproductonEnergyTransfer= 200
+    this.reproductionEnergyTransfer= 200
 
     this.land = grid[this.position[0]][this.position[1]][2]
 
   }
 
-  // photosynthesis(){
-  //   if (this.land.cargogen >= 0){
-  //     this.land.cargogen -= 1
-  //     this.legacyEnergy += RULES.Cg_pA_rate
-  //   }
-  // }
+  photosynthesis(){
+    if (this.land.cargogen >= 0){
+      this.land.cargogen -= 1
+      this.legacyEnergy += RULES.Cg_pA_rate
+    }
+  }
 
   live(){
 
     // Aging
     this.storedEnergy -= 1
     
-    if (this.land.cargogen >= 0){
-      this.land.cargogen -= 1
-      this.legacyEnergy += RULES.Cg_pA_rate
-    }
+    // Photosynthesis
+    if (this.photosynthete) this.photosynthesis()
     
     if (this.storedEnergy <= 0) this.die()
-    // this.maturity += this.maturationInterval * this.youth
 
     // Reproduction
     this.maturityOutOfOne = this.storedEnergy / (this.lifeSpan)
@@ -67,9 +60,6 @@ export default class Organism extends Item {
 
     // Death
     if (this.maturity < 0) this.die()
-
-    // Photosynthesis
-    // if (this.photosynthete) this.photosynthesis()
   }
 
   die(){
@@ -77,7 +67,7 @@ export default class Organism extends Item {
     this.grid[x][y][1] =  null
 
     // Redistribute the energy of the dead organism to the land
-    this.land.cargogen += (this.startingEnergy +this.legacyEnergy )/ RULES.Cg_pA_rate
+    this.land.cargogen += (this.startingEnergy +this.legacyEnergy ) / RULES.Cg_pA_rate
     delete this.instances[this.id]
   }
 
@@ -91,9 +81,10 @@ export default class Organism extends Item {
 
       // Check that the parent can afford to have a child
       // Subtract that cost from the parent's legacyEnergy
-      if (this.legacyEnergy >= this.reproductonEnergyTransfer){
-        const newMoss = new this.constructor(this.rows, this.cols, this.grid, this.instances, viableMove, this.legacyEnergy, this.generation + 1)
-        this.legacyEnergy -= this.reproductonEnergyTransfer
+      if (this.legacyEnergy >= this.reproductionEnergyTransfer){
+        // if reproductionEnergy transfer is 200 for example, remove that from the legacyEnergy and create a new moss with that amount of starting energy
+        this.legacyEnergy -= this.reproductionEnergyTransfer
+        const newMoss = new this.constructor(this.rows, this.cols, this.grid, this.instances, viableMove, this.reproductionEnergyTransfer, this.generation + 1)
 
         const [x, y] = newMoss.position
         this.instances[newMoss.id] = {

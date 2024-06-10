@@ -49,6 +49,7 @@ export default class God {
     const popupY = document.getElementById('popup-y');
     const popupEnergy = document.getElementById('popup-energy');
     const popupLegacyEnergy = document.getElementById('popup-legacy-energy');
+    const cargogen = document.getElementById('popup-cargogen');
     
     if (this.selectedCell){
       const [x, y] = this.selectedCell
@@ -58,6 +59,7 @@ export default class God {
         popupY.innerHTML = `y: ${y}`
         popupEnergy.innerHTML = `energy: ${grid[x][y][1].energy}`
         popupLegacyEnergy.innerHTML = `legacyEnergy: ${grid[x][y][1].legacyEnergy}`
+        cargogen.innerHTML = `landCargogen: ${grid[x][y][2].cargogen}`
       } else {
         popup.style.display = "none"
       }

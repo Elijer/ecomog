@@ -1,5 +1,5 @@
 import rgbHex from 'rgb-hex';
-import { roundTo } from '#root/utilities.mjs'
+import RULES from '#root/saskanupe_constants.mjs'
 
 export class Tile {
   constructor(){
@@ -24,7 +24,7 @@ export class TerrainTile extends Tile {
     super()
     this.rgb = [14, 5, 18]
     this.noise = noise
-    this.cargogen = noise * 50 // 50 being the max value of cargogen you can get
+    this.cargogen = noise * RULES.noiseCargogenRatio // 1 * RULES.noiseCargogenRatio being the max amount of Cg that could seed
     this.type = "terrain"
     this.color = this.parseMinerals()
     // this.color = 
@@ -39,6 +39,13 @@ export class TerrainTile extends Tile {
   getRandomTerrainColor(){
     const terrainColors = ["#010101", "#010101", "#020202", "#030303", "#040404", "#050505", "#060606", "#070707", "#080808", "#090909"];
     return terrainColors[Math.floor(Math.random() * terrainColors.length)]
+  }
+
+  portableState(){
+    return {
+      ...super.portableState(),
+      cargogen: this.cargogen
+    }
   }
 }
 

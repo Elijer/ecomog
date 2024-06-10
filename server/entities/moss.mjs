@@ -1,6 +1,5 @@
 import Organism from './organism.mjs'
 import rgbHex from 'rgb-hex';
-import { clamp } from '#root/utilities.mjs'
 
 
 export default class Moss extends Organism {

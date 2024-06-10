@@ -1,6 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import rgbHex from 'rgb-hex';
-import { clamp } from '#root/utilities.mjs'
 import { Item } from './tiles.mjs'
 
 export default class Moss extends Item {
