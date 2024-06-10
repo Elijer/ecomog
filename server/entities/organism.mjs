@@ -27,6 +27,7 @@ export default class Organism extends Item {
     this.maturityOutOfOne = 0
 
     this.photosynthete = false
+    this.mobile = false
     this.lifeSpan = startingEnergy
     this.storedEnergy = startingEnergy
     this.legacyEnergy = 0
@@ -53,6 +54,8 @@ export default class Organism extends Item {
     
     // Photosynthesis
     if (this.photosynthete) this.photosynthesis()
+
+    if (this.mobile) this.move()
     
     if (this.storedEnergy <= 0) this.die()
 
@@ -64,6 +67,10 @@ export default class Organism extends Item {
 
     // Death
     if (this.maturity < 0) this.die()
+  }
+
+  move(){
+    console.log("movement")
   }
 
   die(){

@@ -19,5 +19,6 @@ export default class Moss extends Organism {
       this.type = "nwa"
       this.photosynthete = false
       this.color = "brown"
+      this.mobile = true
     }
 }
