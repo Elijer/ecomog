@@ -1,6 +1,7 @@
 
 import Player from './entities/player.mjs'
 import Moss from './entities/moss.mjs'
+import Nwa from './entities/nwa.mjs'
 import { Tile, TerrainTile } from './entities/tiles.mjs'
 import { simplex2Rounded, simplex2, simplexPositive } from './lib/simplex2.mjs'
 import { CHANNELS } from './saskanupe_constants.mjs'
@@ -10,11 +11,26 @@ class GameInstance {
     this.rows = rows
     this.cols = cols
     this.players = {}
+    this.nwas = {}
     this.mosses = {}
     this.noiseScale = 30
     this.mineralCapacity = 1
     this.grid = this.initializeGrid()
-    this.initializeMosses()
+
+    this.lifeMap = {
+      mosses: {
+        list: this.mosses,
+        channel: CHANNELS.moss,
+        obj: Moss
+      },
+      nwas: {
+        list: this.nwas,
+        channel: CHANNELS.nwa,
+        obj: Nwa
+      }
+    }
+
+    this.initializeOrganisms()
   }
 
   initializeGrid() {
@@ -61,17 +77,21 @@ class GameInstance {
     }
   }
 
-  initializeMosses(){
-    const initialMossCount = this.rows * this.cols * Moss.emergence
-    for (let i = 0; i < initialMossCount; i++){
-      const moss = new Moss(this.rows, this.cols, this.grid, this.mosses, null, 200)
-      const [x, y] = moss.position
-      this.mosses[moss.id] = {
-        position: [x,y]
+  initializeOrganisms(){
+    for (const [key, value] of Object.entries(this.lifeMap)){
+      const organismCount = this.rows * this.cols * value.obj.emergence
+      // console.log(organismCount)
+      for (let i = 0; i < organismCount; i++){
+        const organism = new value.obj(this.rows, this.cols, this.grid, value.list, null, 200)
+        const [x, y] = organism.position
+        value.list[organism.id] = {
+          position: [x,y]
+        }
+        this.grid[x][y][value.channel] = organism
       }
-      this.grid[x][y][CHANNELS.moss] = moss
     }
   }
+
 
   portableState(){
     return {
