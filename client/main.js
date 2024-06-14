@@ -9,7 +9,15 @@ const mapConfig = {
   sqSize: 2
 }
 
-const  socket = io("ws://localhost:3000")
+let socketAddress = "ws://localhost:3000"
+if (env === "production"){
+  address = env.wsAddress
+}
+
+const  socket = io(socketAddress)
+// https://hot-poets-care.loca.lt
+//https://rotten-grapes-rescue.loca.lt
+// const  socket = io("ws://dark-islands-press.loca.lt")
 socket.on("connect", () => {
   console.log("Connected")
   socket.emit("player joined", playerId())

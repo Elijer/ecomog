@@ -3,7 +3,7 @@ import rgbHex from 'rgb-hex';
 import { CHANNELS } from '#root/saskanupe_constants.mjs';
 
 
-export default class Moss extends Organism {
+export default class Nwa extends Organism {
   constructor(
     rows,
     cols,
@@ -20,6 +20,7 @@ export default class Moss extends Organism {
       this.photosynthete = false
       this.color = "brown"
       this.mobile = true
+      this.lifeCadence = 9
     }
     
     portableState(){

@@ -21,7 +21,7 @@ export default class Moss extends Organism {
       this.rgb = [60, 180, 120]
       this.type = "moss"
       this.photosynthete = true
-      this.lifeCadence = 1
+      this.lifeCadence = 10
     
     }
 

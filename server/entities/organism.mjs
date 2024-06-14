@@ -20,9 +20,9 @@ export default class Organism extends Item {
     // Life Cycle
     this.maturity = 0
     this.maturationInterval = 1
-    this.lifeCadence = 5 // how many life calls for every frame of lifeSpeed
+    this.lifeCadence = 20 // how many life calls for every frame of lifeSpeed
 
-    this.reproductionInterval = 5
+    this.reproductionInterval = 17
     this.reproductiveWindow = [0, 1]
     this.maturityOutOfOne = 0
 
@@ -70,6 +70,7 @@ export default class Organism extends Item {
   }
 
   move(){
+    if (this.instances[this.id] === undefined || this.instances[this.id].position === undefined) return // crashing on this
     const moves = [
       [0, -1],
       [0, 1],

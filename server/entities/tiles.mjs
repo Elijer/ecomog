@@ -23,7 +23,7 @@ export class Tile {
 export class TerrainTile extends Tile {
   constructor(noise){
     super()
-    this.rgb = [14, 5, 18]
+    this.rgb = [40, 20, 52]
     this.noise = noise
     this.cargogen = noise * RULES.noiseCargogenRatio // 1 * RULES.noiseCargogenRatio being the max amount of Cg that could seed
     this.type = "terrain"
