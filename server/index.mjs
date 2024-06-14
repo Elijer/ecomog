@@ -27,7 +27,9 @@ console.log()
 const io = new Server(httpServer, {
   cors: {
     origin: process.env.NODE_ENV === "production" ? "https://ecomog.vercel.app" : "http://localhost:5173",
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+    credentials: true
   }
 });
 
