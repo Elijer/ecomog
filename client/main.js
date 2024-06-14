@@ -10,7 +10,7 @@ const mapConfig = {
 }
 
 
-let socketAddress = "ws://git.heroku.com/thornberry-mog.git:3000"
+let socketAddress = "wss://git.heroku.com/thornberry-mog.git:3000"
 if (window.location.hostname === "localhost") {
   socketAddress = "ws://localhost:3000"
 }
