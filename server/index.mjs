@@ -73,7 +73,7 @@ const httpServer = createServer();
 console.log()
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.NODE_ENV === "production" ? "https://thornberry-mog.herokuapp.com" : "http://localhost:8080",
     methods: ["GET", "POST"]
   }
 });
