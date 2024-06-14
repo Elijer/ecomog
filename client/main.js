@@ -9,15 +9,13 @@ const mapConfig = {
   sqSize: 2
 }
 
-let socketAddress = "ws://localhost:3000"
-if (env === "production"){
-  address = env.wsAddress
-}
 
+let socketAddress = "ws://git.heroku.com/thornberry-mog.git:3000"
+if (window.location.hostname === "localhost") {
+  socketAddress = "ws://localhost:3000"
+}
 const  socket = io(socketAddress)
-// https://hot-poets-care.loca.lt
-//https://rotten-grapes-rescue.loca.lt
-// const  socket = io("ws://dark-islands-press.loca.lt")
+
 socket.on("connect", () => {
   console.log("Connected")
   socket.emit("player joined", playerId())
