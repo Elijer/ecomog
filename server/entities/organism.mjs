@@ -22,7 +22,7 @@ export default class Organism extends Item {
     this.maturationInterval = 1
     this.lifeCadence = 5 // how many life calls for every frame of lifeSpeed
 
-    this.reproductionInterval = 17
+    this.reproductionInterval = 5
     this.reproductiveWindow = [0, 1]
     this.maturityOutOfOne = 0
 
